@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-import { isLoaded, withFirebase } from 'react-redux-firebase'
+import { withFirebase } from 'react-redux-firebase'
 
 import GoogleIcon from '../assets/google_signin_icon';
 import { grey50, deepPurple900 } from 'material-ui/styles/colors';
@@ -30,7 +30,6 @@ const Login = ({ firebase }) => {
         MoneyTron
       </p>
       {
-        isLoaded(firebase.auth) &&
           <RaisedButton
             buttonStyle={{
               height: 48
@@ -39,7 +38,7 @@ const Login = ({ firebase }) => {
             labelPosition="after"
             backgroundColor={"white"}
             icon={<GoogleIcon />}
-            onClick={() => firebase.login({ provider: 'google', type: 'popup' })}
+            onClick={() => firebase.login({ provider: 'google', type: 'redirect' })}
           />
       }
     </div>

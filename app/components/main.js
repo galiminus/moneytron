@@ -2,7 +2,7 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router'
-import { isEmpty } from 'react-redux-firebase'
+import { isEmpty, isLoaded } from 'react-redux-firebase'
 
 import VariationForm from './variationForm';
 import SettingsForm from './settingsForm';
@@ -10,11 +10,14 @@ import VariationList from './variationList';
 import Drawer from './drawer';
 import Snackbar from './snackbar';
 import Login from './login';
+import Loading from './loading';
 import PageTransition from 'react-router-page-transition';
 
 const Main = ({ firebase }) => {
-  if (isEmpty(firebase.auth)) {
+  if (isEmpty(firebase.auth) && isLoaded(firebase.auth)) {
     return (<Login />);
+  } else if (isEmpty(firebase.auth) && !isLoaded(firebase.auth)) {
+    return (<Loading />);
   } else {
     return (
       <div>

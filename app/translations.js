@@ -2,7 +2,7 @@ export default {
   "en-US": {
     name: "English",
     settings: "Settings",
-    about: "About",
+    about: "About MoneyTron",
     language: "Language",
     currency: "Currency",
     save: "Save",
@@ -24,7 +24,7 @@ export default {
   "fr-FR": {
     name: "Français",
     settings: "Configuration",
-    about: "À-propos",
+    about: "À propos de MoneyTron",
     language: "Langue",
     currency: "Monnaie",
     save: "Enregister",

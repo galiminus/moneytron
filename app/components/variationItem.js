@@ -41,7 +41,7 @@ const VariationItemAmount = (props) => {
         </div>
         <div>
           {
-            props.variation.frequency === "one-time" ? translations[props.locale].untilEndOfTheMonth : translations[props.locale].everyMonth
+            props.variation.frequency === "one-time" && translations[props.locale].untilEndOfTheMonth
           }
         </div>
       </div>

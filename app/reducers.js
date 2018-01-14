@@ -4,7 +4,6 @@ import variations from "./reducers/variations";
 import selectedVariation from "./reducers/selectedVariation";
 import drawer from "./reducers/drawer";
 import message from "./reducers/message";
-import { firebaseReducer } from 'react-redux-firebase';
 
 import { routerReducer } from 'react-router-redux';
 
@@ -19,6 +18,5 @@ export default combineReducers({
   selectedVariation,
   message,
   form: formReducer,
-  router: routerReducer,
-  firebase: firebaseReducer
+  router: routerReducer
 })

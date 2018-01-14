@@ -2,19 +2,16 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router'
-import { isEmpty, isLoaded } from 'react-redux-firebase'
 
 import VariationForm from './variationForm';
 import SettingsForm from './settingsForm';
 import VariationList from './variationList';
 import Drawer from './drawer';
 import Snackbar from './snackbar';
-import Login from './login';
-import Loading from './loading';
 import About from './about';
 import PageTransition from 'react-router-page-transition';
 
-const Main = ({ firebase }) => {
+const Main = () => {
   return (
     <div>
       <Drawer />
@@ -32,7 +29,6 @@ const Main = ({ firebase }) => {
 
 const mapStateToProps = state => {
   return {
-    firebase: state.firebase
   }
 }
 

@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 import { closeDrawer } from "../actions/drawer";
 import translations from "../translations";
+import Icon from "../icon.png";
 
 const Drawer = (props) => {
   return (
@@ -20,17 +21,16 @@ const Drawer = (props) => {
     >
       <MenuItem
         style={{
-          fontWeight: 800,
           backgroundColor: deepPurple900,
-          color: "white",
-          paddingBottom: "1em",
-          paddingTop: "1em",
-          textTransform: "uppercase",
-          letterSpacing: 1,
-          fontSize: "1.5em"
+          textAlign: "center"
         }}
       >
-        Moneytron
+        <img
+          style={{
+            height: 128
+          }}
+          src={Icon}
+        />
       </MenuItem>
       <MenuItem
         containerElement={<Link to="/settings" />}

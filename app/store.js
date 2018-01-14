@@ -3,8 +3,6 @@ import { compose, applyMiddleware, createStore, combineReducers } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import persistState from 'redux-localstorage';
-import { reactReduxFirebase } from 'react-redux-firebase';
-import firebase from './firebase';
 
 import { Route } from 'react-router'
 
@@ -14,7 +12,6 @@ import history from "./history";
 const historyMiddleware = routerMiddleware(history);
 
 const enhancer = compose(
-  reactReduxFirebase(firebase, { userProfile: 'users' }),
   applyMiddleware(thunk),
   applyMiddleware(logger),
   applyMiddleware(historyMiddleware),

@@ -46,7 +46,7 @@ const VariationList = (props) => {
       />
       <div style={{ paddingTop: 64 }}>
         <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1 }} />
-        <List style={{ paddingTop: 80, zIndex: 0 }}>
+        <List style={{ paddingTop: 68, paddingBottom: 92, zIndex: 0 }}>
           {sortVariations(removeOutdatedVariations(props.variations)).map((variation) => <VariationItem {...props} key={variation.uuid} variation={variation} />)}
         </List>
         <AddVariationButton containerElement={<Link to="/variations/new" />} />

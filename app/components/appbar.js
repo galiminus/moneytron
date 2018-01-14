@@ -7,6 +7,7 @@ const AppBar = (props) => {
   return (
     <MaterialAppBar
       style={{ position: "fixed" }}
+      title={props.title}
       onLeftIconButtonClick={props.onLeftIconButtonClick || props.openDrawer}
       iconElementLeft={props.iconElementLeft}
       iconElementRight={props.iconElementRight}

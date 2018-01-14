@@ -9,12 +9,13 @@ import AutoComplete from 'material-ui/AutoComplete';
 import UUID from 'uuid-js';
 
 import { connect, dispatch } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { addVariation } from '../actions/variations';
 import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import AppBar from "./appbar";
 import ResponsiveSelect from "./responsiveSelect";
 import { setMessage } from "../actions/message";
+import translations from "../translations";
 
 const required = value => (value ? undefined : 'This field is required.')
 
@@ -23,6 +24,15 @@ const AmountField = ({ input, label, meta: { touched, error }, ...custom }) => (
     floatingLabelText={label}
     fullWidth={true}
     autoFocus
+    { ...input }
+    { ...custom }
+  />
+)
+
+const SpreadingField = ({ input, label, meta: { touched, error }, ...custom }) => (
+  <TextField
+    floatingLabelText={label}
+    fullWidth={true}
     { ...input }
     { ...custom }
   />
@@ -60,72 +70,66 @@ class VariationForm extends React.Component {
         <AppBar
           onLeftIconButtonClick={this.props.history.goBack}
           iconElementLeft={<IconButton><BackIcon /></IconButton>}
-          iconElementRight={this.props.valid ? <FlatButton label="Save" onClick={this.props.handleSubmit} /> : undefined}
+          iconElementRight={this.props.valid ? <FlatButton label={translations[this.props.locale].save} onClick={this.props.handleSubmit} /> : undefined}
         />
-        <div style={{ padding: "64px 1em 0 1em" }}>
+        <div style={{ padding: "64px 1em 1em 1em" }}>
           <Field
             name="amount"
             component={AmountField}
             type="number"
             validate={[required]}
-            label="Amount"
+            label={translations[this.props.locale].amount}
             autoFocus
-          />
-          <Field
-            name="date"
-            component={DateField}
-            type="text"
-            validate={[required]}
-            label="Date"
           />
           <Field
             name="label"
             component={LabelField}
             type="text"
-            label="Label"
+            label={translations[this.props.locale].label}
             dataSource={this.props.variations.map((variation) => variation.label)}
           />
           <ResponsiveSelect
             name="direction"
             validate={[required]}
-            label="Direction"
+            label={translations[this.props.locale].direction}
           >
-            <option value={"spending"}>
-              Spending
+            <option value="spending">
+              {translations[this.props.locale].spending}
             </option>
-            <option value={"earning"}>
-              Earning
+            <option value="earning">
+              {translations[this.props.locale].earning}
             </option>
           </ResponsiveSelect>
           <ResponsiveSelect
             name="frequency"
             validate={[required]}
-            label="Frequency"
+            label={translations[this.props.locale].frequency}
           >
             <option value={"one-time"}>
-              One-time
+              {translations[this.props.locale].oneTime}
             </option>
             <option value={"recurring"}>
-              Recurring
+              {translations[this.props.locale].recurring}
             </option>
           </ResponsiveSelect>
-          <ResponsiveSelect
-            name="spreading"
-            validate={[required]}
-            label="Spreading time"
-          >
-            {defaultMonthsSelection().map((numberOfMonths) =>
-              <option value={numberOfMonths} key={numberOfMonths}>
-                {numberOfMonthsToText(numberOfMonths)}
-              </option>
-            )}
-          </ResponsiveSelect>
+          {
+            this.props.frequency === "one-time" &&
+              <Field
+                name="date"
+                component={DateField}
+                type="text"
+                validate={[required]}
+                label={translations[this.props.locale].date}
+              />
+          }
           <Field name="uuid" component='input' type="hidden" validate={[required]} />
         </div>
       </div>
     );
   }
 }
+
+const selector = formValueSelector('variation');
 
 const mapStateToProps = (state) => {
   return {
@@ -134,18 +138,18 @@ const mapStateToProps = (state) => {
       amount: null,
       direction: "spending",
       frequency: "one-time",
-      spreading: 1,
       date: new Date()
     },
     currency: state.configuration.currency,
-    variations: state.variations
+    locale: state.configuration.locale,
+    variations: state.variations,
+    frequency: selector(state, 'frequency')
   }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    addVariation: (variation) => { dispatch(addVariation(variation)) },
-    setMessage: (variation, currency) => { dispatch(setMessage(`${new Intl.NumberFormat('en-US', { style: 'currency', currency: currency }).format(variation.amount)} ${variation.direction} added`)) }
+    addVariation: (variation) => { dispatch(addVariation(variation)) }
   }
 }
 
@@ -156,7 +160,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...dispatchProps,
     onSubmit: (variation) => {
       dispatchProps.addVariation(variation);
-      dispatchProps.setMessage(variation, stateProps.currency);
       ownProps.history.goBack();
     }
   }

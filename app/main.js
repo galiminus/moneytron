@@ -31,6 +31,7 @@ const App = () => (
 document.addEventListener("DOMContentLoaded", e => {
   store.dispatch(updateConfiguration({
     currency: "EUR",
+    locale: "en-US",
     ...(store.getState().configuration || {})
   }));
 

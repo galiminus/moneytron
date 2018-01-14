@@ -5,30 +5,44 @@ import Subheader from 'material-ui/Subheader';
 
 import { connect } from 'react-redux';
 
-import { removeOutdatedVariations, computeDailyAmount  } from "../utils/variations";
-
-const computeTotalDailyAmount = (variations) => {
-  const filteredVariations = removeOutdatedVariations(variations);
-
-  return (filteredVariations.reduce((dailyAmount, variation) => {
-    dailyAmount += computeDailyAmount(variation);
-
-    return (dailyAmount);
-  }, 0));
-}
+import { removeOutdatedVariations, computeDailyAmount, computeCurrentDayAmount, computeTotalDailyAmount } from "../utils/variations";
+import translations from "../translations";
 
 const VariationSummary = (props) => {
+  const dailyAmount = Math.floor(computeTotalDailyAmount(props.variations));
+
   return (
     <Paper style={props.style}>
       <List>
         <Subheader
           style={{ lineHeight: "32px", paddingTop: 8 }}
         >
-          Today you should spend no more than
+          {translations[props.locale].youShouldNotSpendMoreThan}
         </Subheader>
         <ListItem
-          innerDivStyle={{ padding: "8px 16px", fontWeight: "bold" }}
-          primaryText={`${Math.floor(computeTotalDailyAmount(props.variations))} ${props.currency}`}
+          innerDivStyle={{ padding: "0px 16px 4px 16px" }}
+          primaryText={
+            <div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  float: "left"
+                }}
+              >
+                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(Math.abs(dailyAmount))} ${translations[props.locale].everyDay}`}
+              </div>
+              <span
+                style={{
+                  fontSize: "0.7em",
+                  color: "rgba(0, 0, 0, 0.54)",
+                  float: "right"
+                }}
+              >
+                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeCurrentDayAmount(props.variations))} ${translations[props.locale].today}`}
+              </span>
+              <div style={{ clear: "both" }}></div>
+            </div>
+          }
         />
       </List>
     </Paper>
@@ -38,7 +52,8 @@ const VariationSummary = (props) => {
 function mapStateToProps(state) {
   return ({
     variations: state.variations,
-    currency: state.configuration.currency
+    currency: state.configuration.currency,
+    locale: state.configuration.locale
   });
 }
 

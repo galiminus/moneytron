@@ -11,16 +11,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { setSelectedVariation } from "../actions/variations";
-import { numberOfMonthsToText } from "../utils/dates";
+import { spreadToText } from "../utils/dates";
 import { computeDailyAmount } from "../utils/variations";
-
-const timeContext = (variation) => {
-  if (variation.frequency === "one-time") {
-    return (`Spread over ${numberOfMonthsToText(variation.spreading).toLowerCase()}`);
-  } else {
-    return (`Recurring every ${numberOfMonthsToText(variation.spreading).toLowerCase()}`);
-  }
-}
+import translations from "../translations";
 
 const directionIcon = (variation) => {
   if (variation.direction === "spending") {
@@ -33,7 +26,7 @@ const directionIcon = (variation) => {
 const VariationItemAmount = (props) => {
   return (
     <span>
-      <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: props.currency }).format(props.variation.amount)}</span>
+      <span>{new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(props.variation.amount)}</span>
       <div
         style={{
           fontSize: "0.7em",
@@ -44,20 +37,17 @@ const VariationItemAmount = (props) => {
         }}
       >
         <div>
-          {`${new Intl.NumberFormat('en-US', { style: 'currency', currency: props.currency }).format(computeDailyAmount(props.variation))}/d.`}
+          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeDailyAmount(props.variation))}/d.`}
         </div>
-        <div
-          style={{
-            fontWeight: "bold"
-          }}
-        >
-          {props.variation.label}
+        <div>
+          {
+            props.variation.frequency === "one-time" ? translations[props.locale].untilEndOfTheMonth : translations[props.locale].everyMonth
+          }
         </div>
       </div>
     </span>
   );
 }
-
 
 const VariationItem = (props) => {
   return (
@@ -70,10 +60,11 @@ const VariationItem = (props) => {
           <p
             style={{
               fontSize: "0.7em",
-              marginTop: 0
+              marginTop: 2,
+              fontWeight: "bold"
             }}
           >
-            {timeContext(props.variation)}
+            {props.variation.label}
           </p>
         }
         leftIcon={directionIcon(props.variation)}
@@ -87,7 +78,8 @@ function mapStateToProps(state, props) {
   return ({
     configuration: state.configuration,
     isSelected: (state.selectedVariation === props.variation.uuid),
-    currency: state.configuration.currency
+    currency: state.configuration.currency,
+    locale: state.configuration.locale
   });
 }
 

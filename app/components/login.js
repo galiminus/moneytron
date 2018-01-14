@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import FontIcon from 'material-ui/FontIcon';
-import { withFirebase } from 'react-redux-firebase'
+import { firebaseConnect } from 'react-redux-firebase'
 
 import GoogleIcon from '../assets/google_signin_icon';
 import { grey50, deepPurple900 } from 'material-ui/styles/colors';
@@ -45,4 +45,4 @@ const Login = ({ firebase }) => {
   );
 };
 
-export default withFirebase(Login);
+export default firebaseConnect()(Login);

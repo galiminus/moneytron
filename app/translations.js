@@ -1,0 +1,47 @@
+export default {
+  "en-US": {
+    name: "English",
+    settings: "Settings",
+    about: "About",
+    language: "Language",
+    currency: "Currency",
+    save: "Save",
+    amount: "Amount",
+    label: "Label",
+    direction: "Direction",
+    spending: "Spending",
+    earning: "Earning",
+    frequency: "Frequency",
+    oneTime: "One-time",
+    recurring: "Recurring every month",
+    date: "Date",
+    untilEndOfTheMonth: "until the end of the month",
+    everyMonth: "every month",
+    youShouldNotSpendMoreThan: "You can spend up to",
+    everyDay: "every day",
+    today: "today"
+  },
+  "fr-FR": {
+    name: "Français",
+    settings: "Configuration",
+    about: "À-propos",
+    language: "Langue",
+    currency: "Monnaie",
+    save: "Enregister",
+    amount: "Montant",
+    label: "Description",
+    direction: "Direction",
+    spending: "Dépense",
+    earning: "Gain",
+    frequency: "Fréquence",
+    oneTime: "Une seule fois",
+    recurring: "Tout les mois",
+    date: "Date",
+    untilEndOfTheMonth: "jusqu'à la fin du mois",
+    everyMonth: "tout les mois",
+    youShouldNotSpendMoreThan: "Vous pouvez dépenser jusqu'à",
+    everyDay: "par jour",
+    today: "aujourd'hui"
+
+  }
+}

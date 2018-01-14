@@ -11,27 +11,23 @@ import Drawer from './drawer';
 import Snackbar from './snackbar';
 import Login from './login';
 import Loading from './loading';
+import About from './about';
 import PageTransition from 'react-router-page-transition';
 
 const Main = ({ firebase }) => {
-  if (isEmpty(firebase.auth) && isLoaded(firebase.auth)) {
-    return (<Login />);
-  } else if (isEmpty(firebase.auth) && !isLoaded(firebase.auth)) {
-    return (<Loading />);
-  } else {
-    return (
-      <div>
-        <Drawer />
-        <Switch>
-          <Route exact path="/" component={VariationList} />
-          <Route exact path="/variations" component={VariationList} />
-          <Route exact path="/settings" component={SettingsForm} />
-          <Route exact path="/variations/new" component={VariationForm} />
-        </Switch>
-        <Snackbar />
-      </div>
-    )
-  }
+  return (
+    <div>
+      <Drawer />
+      <Switch>
+        <Route exact path="/" component={VariationList} />
+        <Route exact path="/variations" component={VariationList} />
+        <Route exact path="/settings" component={SettingsForm} />
+        <Route exact path="/variations/new" component={VariationForm} />
+        <Route exact path="/about" component={About} />
+      </Switch>
+      <Snackbar />
+    </div>
+  )
 }
 
 const mapStateToProps = state => {

@@ -1,0 +1,8 @@
+body {
+  margin: 0px;
+}
+
+select:focus {
+  outline: 0;
+  border-bottom: 1px solid #311B92 !important;
+}

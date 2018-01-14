@@ -2,15 +2,20 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router'
+import { isEmpty } from 'react-redux-firebase'
+
 import VariationForm from './variationForm';
 import SettingsForm from './settingsForm';
 import VariationList from './variationList';
 import Drawer from './drawer';
 import Snackbar from './snackbar';
+import Login from './login';
 import PageTransition from 'react-router-page-transition';
 
-class Main extends React.Component {
-  render() {
+const Main = ({ firebase }) => {
+  if (isEmpty(firebase.auth)) {
+    return (<Login />);
+  } else {
     return (
       <div>
         <Drawer />
@@ -28,6 +33,7 @@ class Main extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    firebase: state.firebase
   }
 }
 

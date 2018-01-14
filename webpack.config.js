@@ -19,6 +19,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.css$/, include: path.resolve(__dirname, 'app'), loader: 'style-loader!css-loader' },
+      { test: /\.svg$/, include: path.resolve(__dirname, 'app'), loader: 'svg-inline-loader' },
       { test: /\.js[x]?$/, include: path.resolve(__dirname, 'app'), exclude: /node_modules/, loader: 'babel-loader' }
     ]
   },

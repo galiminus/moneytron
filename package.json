@@ -20,6 +20,7 @@
   "dependencies": {
     "babel-runtime": "6.x",
     "currency-symbol-map": "^4.0.3",
+    "firebase": "^4.8.2",
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
@@ -27,6 +28,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
+    "react-redux-firebase": "^2.0.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-page-transition": "^3.0.2",
@@ -62,6 +64,7 @@
     "husky": "^0.12.0",
     "open-browser-webpack-plugin": "0.0.3",
     "style-loader": "~0.13.1",
+    "svg-inline-loader": "^0.8.0",
     "validate-commit-msg": "2.x",
     "webpack": "latest",
     "webpack-dev-server": "latest"

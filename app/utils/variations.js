@@ -14,53 +14,57 @@ export function removeOutdatedVariations(variations) {
   }, []))
 }
 
-export function computeDailyAmount(variation) {
+export function computeAmount(variation, range = "day") {
   let amount = Number(variation.amount);
+  let daysInMonth = moment().daysInMonth();
 
   if (variation.direction === "spending") {
     amount = -amount;
   }
   if (variation.frequency === "one-time") {
-    return (amount / (moment(moment().endOf('month')).diff(variation.date, 'days')));
+    if (range == "month") {
+      return (amount)
+    }
+    return (amount / (moment(moment().endOf('month')).diff(variation.date, `${range}s`)));
   } else {
-    return (amount / 30.5);
+    return (amount / { "day": daysInMonth, "week": (daysInMonth / 7.0), "month": 1 }[range]);
   }
 }
 
-export function filterCurrentDayVariations(variations) {
+export function filterCurrentVariations(variations, range) {
   const today = moment();
 
   return (variations.reduce((filteredVariations, variation) => {
     const date = moment(variation.date);
-    if (variation.frequency === "one-time" && date.isSame(new Date(), "day")) {
+    if (variation.frequency === "one-time" && date.isSame(new Date(), range)) {
       filteredVariations.push(variation);
     }
     return (filteredVariations);
   }, []))
 }
 
-export function computeCurrentDayAmount(variations) {
-  const currentDayVariations = filterCurrentDayVariations(variations);
-  return (currentDayVariations.reduce((dailyAmount, variation) => {
+export function computeCurrentRangeAmount(variations, range = "day") {
+  const currentVariations = filterCurrentVariations(variations, range);
+  return (currentVariations.reduce((totalAmount, variation) => {
     let amount = Number(variation.amount);
 
     if (variation.direction === "spending") {
       amount = -amount;
     }
 
-    dailyAmount += Number(amount);
-    return (dailyAmount);
+    totalAmount += Number(amount);
+    return (totalAmount);
   }, 0));
 }
 
-export function computeTotalDailyAmount(variations) {
+export function computeTotalRangeAmount(variations, range = "day") {
   const filteredVariations = removeOutdatedVariations(variations);
 
-  let totalDailyAmount = filteredVariations.reduce((dailyAmount, variation) => {
-    dailyAmount += computeDailyAmount(variation);
+  let totalAmount = filteredVariations.reduce((amount, variation) => {
+    amount += computeAmount(variation, range);
 
-    return (dailyAmount);
+    return (amount);
   }, 0);
 
-  return (totalDailyAmount > 0 ? totalDailyAmount : 0);
+  return (totalAmount > 0 ? totalAmount : 0);
 }

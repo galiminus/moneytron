@@ -18,8 +18,22 @@ export default {
     untilEndOfTheMonth: "until the end of the month",
     everyMonth: "every month",
     youShouldNotSpendMoreThan: "You can spend up to",
-    everyDay: "every day",
-    today: "today"
+    estimate: "Estimate",
+    range: {
+      "day": "By day",
+      "week": "By week",
+      "month": "By month",
+    },
+    currentRange: {
+      "day": "today",
+      "week": "this week",
+      "month": "this month"
+    },
+    shortRange: {
+      "day": "d.",
+      "week": "w.",
+      "month": "m."
+    }
   },
   "fr-FR": {
     name: "Français",
@@ -40,8 +54,21 @@ export default {
     untilEndOfTheMonth: "jusqu'à la fin du mois",
     everyMonth: "tout les mois",
     youShouldNotSpendMoreThan: "Vous pouvez dépenser jusqu'à",
-    everyDay: "par jour",
-    today: "aujourd'hui"
-
+    estimate: "Estimation",
+    range: {
+      "day": "Par jour",
+      "week": "Par semaine",
+      "month": "Par mois",
+    },
+    currentRange: {
+      "day": "aujourd'hui",
+      "week": "cette semaine",
+      "month": "ce mois"
+    },
+    shortRange: {
+      "day": "j.",
+      "week": "s.",
+      "month": "m."
+    }
   }
 }

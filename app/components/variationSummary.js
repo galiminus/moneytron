@@ -5,11 +5,11 @@ import Subheader from 'material-ui/Subheader';
 
 import { connect } from 'react-redux';
 
-import { removeOutdatedVariations, computeDailyAmount, computeCurrentDayAmount, computeTotalDailyAmount } from "../utils/variations";
+import { removeOutdatedVariations, computeDailyAmount, computeCurrentRangeAmount, computeTotalRangeAmount } from "../utils/variations";
 import translations from "../translations";
 
 const VariationSummary = (props) => {
-  const dailyAmount = Math.floor(computeTotalDailyAmount(props.variations));
+  const dailyAmount = Math.floor(computeTotalRangeAmount(props.variations, props.range));
 
   return (
     <Paper style={props.style}>
@@ -26,10 +26,11 @@ const VariationSummary = (props) => {
               <div
                 style={{
                   fontWeight: "bold",
-                  float: "left"
+                  float: "left",
+                  textTransform: "lowercase"
                 }}
               >
-                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(Math.abs(dailyAmount))} ${translations[props.locale].everyDay}`}
+                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(Math.abs(dailyAmount))} ${translations[props.locale].range[props.range]}`}
               </div>
               <span
                 style={{
@@ -38,7 +39,7 @@ const VariationSummary = (props) => {
                   float: "right"
                 }}
               >
-                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeCurrentDayAmount(props.variations))} ${translations[props.locale].today}`}
+                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeCurrentRangeAmount(props.variations, props.range))} ${translations[props.locale].currentRange[props.range]}`}
               </span>
               <div style={{ clear: "both" }}></div>
             </div>

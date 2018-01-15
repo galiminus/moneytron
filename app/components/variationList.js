@@ -4,6 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import { List } from 'material-ui/List';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import VariationItem from "./variationItem";
 import AddVariationButton from './addVariationButton';
@@ -33,10 +34,21 @@ const sortVariations = (variations) => {
   }));
 }
 
+const currentMonthName = (locale) => {
+  const currentTime = moment();
+  currentTime.locale(locale);
+
+  let name = currentTime.format("MMMM");
+
+  return (name.charAt(0).toUpperCase() + name.slice(1))
+}
+
 const VariationList = (props) => {
+
   return (
     <div>
       <AppBar
+        title={currentMonthName(props.locale)}
         iconElementRight={
           props.selectedVariation &&
             <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
@@ -45,9 +57,9 @@ const VariationList = (props) => {
         }
       />
       <div style={{ paddingTop: 64 }}>
-        <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1 }} />
+        <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1 }} range={props.range} />
         <List style={{ paddingTop: 68, paddingBottom: 92, zIndex: 0 }}>
-          {sortVariations(removeOutdatedVariations(props.variations)).map((variation) => <VariationItem {...props} key={variation.uuid} variation={variation} />)}
+          {sortVariations(removeOutdatedVariations(props.variations)).map((variation) => <VariationItem {...props} key={variation.uuid} variation={variation} range={props.range} />)}
         </List>
         <AddVariationButton containerElement={<Link to="/variations/new" />} />
       </div>
@@ -55,10 +67,11 @@ const VariationList = (props) => {
   );
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return ({
     variations: state.variations,
-    selectedVariation: state.selectedVariation
+    selectedVariation: state.selectedVariation,
+    range: props.match.params.range || "day"
   });
 }
 

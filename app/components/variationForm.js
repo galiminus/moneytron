@@ -1,8 +1,8 @@
 import React from 'react';
-import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
+import DoneIcon from 'material-ui/svg-icons/action/done';
 import DatePicker from 'material-ui/DatePicker';
 import AutoComplete from 'material-ui/AutoComplete';
 
@@ -70,7 +70,7 @@ class VariationForm extends React.Component {
         <AppBar
           onLeftIconButtonClick={this.props.history.goBack}
           iconElementLeft={<IconButton><BackIcon /></IconButton>}
-          iconElementRight={this.props.valid ? <FlatButton label={translations[this.props.locale].save} onClick={this.props.handleSubmit} /> : undefined}
+          iconElementRight={this.props.valid ? <IconButton onClick={this.props.handleSubmit}><DoneIcon /></IconButton> : undefined}
         />
         <div style={{ padding: "64px 1em 1em 1em" }}>
           <Field

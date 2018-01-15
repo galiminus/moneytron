@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import { deepPurple900 } from 'material-ui/styles/colors';
 import { Link } from 'react-router-dom';
 import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
 
 import { connect } from 'react-redux';
 
@@ -32,6 +33,26 @@ const Drawer = (props) => {
           src={Icon}
         />
       </MenuItem>
+
+      <Subheader>{translations[props.locale].estimate}</Subheader>
+      <MenuItem
+        containerElement={<Link to="/variations/day" />}
+      >
+        {translations[props.locale].range["day"]}
+      </MenuItem>
+
+      <MenuItem
+        containerElement={<Link to="/variations/week" />}
+      >
+      {translations[props.locale].range["week"]}
+      </MenuItem>
+
+      <MenuItem
+        containerElement={<Link to="/variations/month" />}
+      >
+      {translations[props.locale].range["month"]}
+      </MenuItem>
+      <Divider />
       <MenuItem
         containerElement={<Link to="/settings" />}
       >

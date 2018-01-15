@@ -1,6 +1,6 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
-import FlatButton from 'material-ui/FlatButton';
+import DoneIcon from 'material-ui/svg-icons/action/done';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 
 import currencyToSymbolMap from 'currency-symbol-map/map';
@@ -24,7 +24,7 @@ class SettingsForm extends React.Component {
         <AppBar
           onLeftIconButtonClick={this.props.history.goBack}
           iconElementLeft={<IconButton><BackIcon /></IconButton>}
-          iconElementRight={<FlatButton label={translations[this.props.locale].save} onClick={this.props.handleSubmit} disabled={!this.props.valid} />}
+          iconElementRight={<IconButton onClick={this.props.handleSubmit}><DoneIcon /></IconButton>}
         />
         <div style={{ padding: "64px 1em 0 1em" }}>
           <ResponsiveSelect

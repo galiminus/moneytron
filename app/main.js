@@ -4,6 +4,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { deepPurple900 } from 'material-ui/styles/colors';
 
+import "moment";
+import "moment/locale/fr";
+
 import Main from './components/main';
 import { Provider } from 'react-redux';
 import { updateConfiguration } from './actions/configuration';
@@ -11,6 +14,7 @@ import { ConnectedRouter } from 'react-router-redux'
 
 import store from "./store";
 import history from "./history";
+
 
 const muiTheme = getMuiTheme({
   palette: {

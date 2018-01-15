@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 
 import { setSelectedVariation } from "../actions/variations";
 import { spreadToText } from "../utils/dates";
-import { computeDailyAmount } from "../utils/variations";
+import { computeAmount } from "../utils/variations";
 import translations from "../translations";
 
 const directionIcon = (variation) => {
@@ -37,7 +37,7 @@ const VariationItemAmount = (props) => {
         }}
       >
         <div>
-          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeDailyAmount(props.variation))}/d.`}
+          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeAmount(props.variation, props.range))}/${translations[props.locale].shortRange[props.range]}`}
         </div>
         <div>
           {

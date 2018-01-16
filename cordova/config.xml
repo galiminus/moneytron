@@ -20,22 +20,5 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <plugin name="cordova-plugin-buildinfo" spec="^2.0.1" />
-    <plugin name="cordova-plugin-browsertab" spec="^0.2.0" />
-    <plugin name="cordova-universal-links-plugin" spec="https://github.com/walteram/cordova-universal-links-plugin.git#3fd1306dfe7cfb9ca2aabdf9df47d2f6a99853d0" />
-    <universal-links>
-        <host name="cj5nw.app.goo.gl" schema="https" />
-        <host name="moneytron.firebaseapp.com" scheme="https">
-            <path url="/__/auth/callback" />
-        </host>
-    </universal-links>
-    <preference name="AndroidLaunchMode" value="singleTask" />
-    <plugin name="cordova-plugin-inappbrowser" spec="~2.0.1" />
-    <plugin name="cordova-plugin-customurlscheme" spec="^4.3.0">
-        <variable name="URL_SCHEME" value="com.firebase.cordova" />
-        <variable name="ANDROID_SCHEME" value=" " />
-        <variable name="ANDROID_HOST" value=" " />
-        <variable name="ANDROID_PATHPREFIX" value="/" />
-    </plugin>
     <engine name="android" spec="^7.0.0" />
 </widget>

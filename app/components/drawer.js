@@ -25,6 +25,7 @@ const Drawer = (props) => {
           backgroundColor: deepPurple900,
           textAlign: "center"
         }}
+        containerElement={<Link to="/variations/day" />}
       >
         <img
           style={{

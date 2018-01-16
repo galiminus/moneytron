@@ -44,6 +44,7 @@ const LabelField =  ({ input, label, meta: { touched, error }, ...custom }) => (
     fullWidth={true}
     { ...input }
     { ...custom }
+    filter={AutoComplete.caseInsensitiveFilter}
     onUpdateInput={(value) => {
       input.onChange(value)
     }}
@@ -63,8 +64,16 @@ const DateField = ({ input, label, meta: { touched, error }, ...custom }) => (
   />
 )
 
+const labelDataSource = (variations, direction) => (
+  variations
+    .filter((variation) => variation.direction === direction)
+    .map((variation) => variation.label)
+    .reduce((x, y) => x.includes(y) ? x : [...x, y], [])
+)
+
 class VariationForm extends React.Component {
   render() {
+    console.log(labelDataSource(this.props.variations, this.props.direction));
     return (
       <div className="transition-item">
         <AppBar
@@ -81,13 +90,6 @@ class VariationForm extends React.Component {
             label={translations[this.props.locale].amount}
             autoFocus
           />
-          <Field
-            name="label"
-            component={LabelField}
-            type="text"
-            label={translations[this.props.locale].label}
-            dataSource={this.props.variations.map((variation) => variation.label)}
-          />
           <ResponsiveSelect
             name="direction"
             validate={[required]}
@@ -100,6 +102,13 @@ class VariationForm extends React.Component {
               {translations[this.props.locale].earning}
             </option>
           </ResponsiveSelect>
+          <Field
+            name="label"
+            component={LabelField}
+            type="text"
+            label={translations[this.props.locale].label}
+            dataSource={labelDataSource(this.props.variations, this.props.direction)}
+          />
           <ResponsiveSelect
             name="frequency"
             validate={[required]}
@@ -143,7 +152,8 @@ const mapStateToProps = (state) => {
     currency: state.configuration.currency,
     locale: state.configuration.locale,
     variations: state.variations,
-    frequency: selector(state, 'frequency')
+    frequency: selector(state, 'frequency'),
+    direction: selector(state, 'direction')
   }
 }
 

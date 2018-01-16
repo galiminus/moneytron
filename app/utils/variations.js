@@ -17,6 +17,7 @@ export function removeOutdatedVariations(variations) {
 export function computeAmount(variation, range = "day") {
   let amount = Number(variation.amount);
   let daysInMonth = moment().daysInMonth();
+  let endOfMonth = moment(moment().endOf('month'));
 
   if (variation.direction === "spending") {
     amount = -amount;
@@ -25,7 +26,7 @@ export function computeAmount(variation, range = "day") {
     if (range == "month") {
       return (amount)
     }
-    return (amount / (moment(moment().endOf('month')).diff(variation.date, `${range}s`)));
+    return (amount / (endOfMonth.diff(variation.date, `${range}s`)));
   } else {
     return (amount / { "day": daysInMonth, "week": (daysInMonth / 7.0), "month": 1 }[range]);
   }

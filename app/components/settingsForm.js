@@ -14,46 +14,53 @@ import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import ResponsiveSelect from "./responsiveSelect";
 import { setMessage } from "../actions/message";
 import translations from "../translations";
+import { Desktop, Mobile } from "./devices";
 
 const required = value => (value ? undefined : 'This field is required.')
 
-class SettingsForm extends React.Component {
-  render() {
-    return (
-      <div>
-        <AppBar
-          onLeftIconButtonClick={this.props.history.goBack}
-          iconElementLeft={<IconButton><BackIcon /></IconButton>}
-          iconElementRight={<IconButton onClick={this.props.handleSubmit}><DoneIcon /></IconButton>}
-        />
-        <div style={{ padding: "64px 1em 0 1em" }}>
-          <ResponsiveSelect
-            name="currency"
-            validate={[required]}
-            label={translations[this.props.locale].currency}
-          >
-            {Object.keys(currencyToSymbolMap).map((currency) =>
-              <option value={currency} key={currency}>
-                {currency}
-              </option>
-            )}
-          </ResponsiveSelect>
-          <ResponsiveSelect
-            name="locale"
-            validate={[required]}
-            label={translations[this.props.locale].language}
-          >
-            {Object.keys(translations).map((locale) =>
-              <option value={locale} key={locale}>
-                {translations[locale].name}
-              </option>
-            )}
-          </ResponsiveSelect>
-        </div>
+const Fields = (props) => (
+  <div>
+    <ResponsiveSelect
+      name="currency"
+      validate={[required]}
+      label={translations[props.locale].currency}
+      collection={
+        Object.keys(currencyToSymbolMap).reduce((collection, currency) => (
+          { ...collection, [currency]: currency }
+        ), {})
+      }
+    />
+    <ResponsiveSelect
+      name="locale"
+      validate={[required]}
+      label={translations[props.locale].language}
+      collection={
+        Object.keys(translations).reduce((collection, locale) => (
+          { ...collection, [locale]: translations[locale].name }
+        ), {})}
+    />
+  </div>
+)
+
+const SettingsForm = (props) => (
+  <div>
+    <AppBar
+      onLeftIconButtonClick={props.history.goBack}
+      iconElementLeft={<IconButton><BackIcon /></IconButton>}
+      iconElementRight={<IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton>}
+    />
+    <Desktop>
+      <div style={{ width: "40%", margin: "auto" }}>
+        <Fields {...props} />
       </div>
-    );
-  }
-}
+    </Desktop>
+    <Mobile>
+      <div style={{ padding: "0 1em" }}>
+        <Fields {...props} />
+      </div>
+    </Mobile>
+  </div>
+)
 
 const mapStateToProps = (state) => {
   return {

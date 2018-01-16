@@ -16,6 +16,7 @@ import AppBar from "./appbar";
 import ResponsiveSelect from "./responsiveSelect";
 import { setMessage } from "../actions/message";
 import translations from "../translations";
+import { Desktop, Mobile } from "./devices";
 
 const required = value => (value ? undefined : 'This field is required.')
 
@@ -42,9 +43,9 @@ const LabelField =  ({ input, label, meta: { touched, error }, ...custom }) => (
   <AutoComplete
     floatingLabelText={label}
     fullWidth={true}
+    filter={AutoComplete.caseInsensitiveFilter}
     { ...input }
     { ...custom }
-    filter={AutoComplete.caseInsensitiveFilter}
     onUpdateInput={(value) => {
       input.onChange(value)
     }}
@@ -57,6 +58,7 @@ const DateField = ({ input, label, meta: { touched, error }, ...custom }) => (
     fullWidth={true}
     { ...input }
     { ...custom }
+    maxDate={new Date()}
     value={input.value ? new Date(input.value) : new Date()}
     onChange={(event, value) => {
       input.onChange(value)
@@ -71,72 +73,78 @@ const labelDataSource = (variations, direction) => (
     .reduce((x, y) => x.includes(y) ? x : [...x, y], [])
 )
 
-class VariationForm extends React.Component {
-  render() {
-    console.log(labelDataSource(this.props.variations, this.props.direction));
-    return (
-      <div className="transition-item">
-        <AppBar
-          onLeftIconButtonClick={this.props.history.goBack}
-          iconElementLeft={<IconButton><BackIcon /></IconButton>}
-          iconElementRight={this.props.valid ? <IconButton onClick={this.props.handleSubmit}><DoneIcon /></IconButton> : undefined}
+const Fields = (props) => (
+  <div>
+    <Field
+      name="amount"
+      component={AmountField}
+      type="number"
+      validate={[required]}
+      label={translations[props.locale].amount}
+      autoFocus
+    />
+    <ResponsiveSelect
+      name="direction"
+      validate={[required]}
+      label={translations[props.locale].direction}
+      collection={
+        {
+          "spending": translations[props.locale].spending,
+          "earning": translations[props.locale].earning
+        }
+      }
+    />
+    <Field
+      name="label"
+      component={LabelField}
+      type="text"
+      label={translations[props.locale].label}
+      dataSource={labelDataSource(props.variations, props.direction)}
+    />
+    <ResponsiveSelect
+      name="frequency"
+      validate={[required]}
+      label={translations[props.locale].frequency}
+      collection={
+        {
+          "one-time": translations[props.locale].oneTime,
+          "recurring": translations[props.locale].recurring
+        }
+      }
+    />
+    {
+      props.frequency === "one-time" &&
+        <Field
+          name="date"
+          component={DateField}
+          type="text"
+          validate={[required]}
+          label={translations[props.locale].date}
         />
-        <div style={{ padding: "64px 1em 1em 1em" }}>
-          <Field
-            name="amount"
-            component={AmountField}
-            type="number"
-            validate={[required]}
-            label={translations[this.props.locale].amount}
-            autoFocus
-          />
-          <ResponsiveSelect
-            name="direction"
-            validate={[required]}
-            label={translations[this.props.locale].direction}
-          >
-            <option value="spending">
-              {translations[this.props.locale].spending}
-            </option>
-            <option value="earning">
-              {translations[this.props.locale].earning}
-            </option>
-          </ResponsiveSelect>
-          <Field
-            name="label"
-            component={LabelField}
-            type="text"
-            label={translations[this.props.locale].label}
-            dataSource={labelDataSource(this.props.variations, this.props.direction)}
-          />
-          <ResponsiveSelect
-            name="frequency"
-            validate={[required]}
-            label={translations[this.props.locale].frequency}
-          >
-            <option value={"one-time"}>
-              {translations[this.props.locale].oneTime}
-            </option>
-            <option value={"recurring"}>
-              {translations[this.props.locale].recurring}
-            </option>
-          </ResponsiveSelect>
-          {
-            this.props.frequency === "one-time" &&
-              <Field
-                name="date"
-                component={DateField}
-                type="text"
-                validate={[required]}
-                label={translations[this.props.locale].date}
-              />
-          }
-          <Field name="uuid" component='input' type="hidden" validate={[required]} />
-        </div>
+    }
+    <Field name="uuid" component='input' type="hidden" validate={[required]} />
+  </div>
+)
+
+const VariationForm = (props) => (
+  <div>
+    <AppBar
+      onLeftIconButtonClick={props.history.goBack}
+      iconElementLeft={<IconButton><BackIcon /></IconButton>}
+      iconElementRight={props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined}
+    />
+    <Desktop>
+      <div style={{ width: "40%", margin: "auto" }}>
+        <Fields {...props} />
       </div>
-    );
-  }
-}
+    </Desktop>
+    <Mobile>
+      <div style={{ padding: "0 1em" }}>
+        <Fields {...props} />
+      </div>
+    </Mobile>
+  </div>
+)
 
 const selector = formValueSelector('variation');
 

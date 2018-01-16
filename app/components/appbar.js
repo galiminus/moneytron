@@ -2,22 +2,21 @@ import React from 'react';
 import MaterialAppBar from 'material-ui/AppBar';
 import { connect } from 'react-redux';
 import { openDrawer } from "../actions/drawer";
+import { Desktop, Mobile } from "./devices";
 
-const AppBar = (props) => {
-  return (
-    <MaterialAppBar
-      style={{ position: "fixed" }}
-      title={props.title}
-      onLeftIconButtonClick={props.onLeftIconButtonClick || props.openDrawer}
-      iconElementLeft={props.iconElementLeft}
-      iconElementRight={props.iconElementRight}
-    />
-  );
-};
+const AppBar = (props) => (
+  <MaterialAppBar
+    style={{ display: "flex" }}
+    title={props.title}
+    onLeftIconButtonClick={props.onLeftIconButtonClick || props.openDrawer}
+    iconElementLeft={props.iconElementLeft}
+    iconElementRight={props.iconElementRight}
+    showMenuIconButton={props.showMenuIconButton}
+  />
+)
 
 function mapStateToProps(state, props) {
-  return ({
-  });
+  return {};
 }
 
 const mapDispatchToProps = (dispatch) => {

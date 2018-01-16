@@ -16,7 +16,7 @@ const About = (props) => (
     />
     <div
       style={{
-        padding: "64px 1em 0 1em",
+        padding: "0 1em",
         fontFamily: "Roboto, sans-serif",
         fontSize: "1.1em",
         textAlign: "justify"

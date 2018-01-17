@@ -12,7 +12,6 @@ import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
 import { removeOutdatedVariations } from "../utils/variations";
-import { Desktop, Mobile } from "./devices";
 
 import { Link } from 'react-router-dom';
 
@@ -44,56 +43,29 @@ const currentMonthName = (locale) => {
   return (name.charAt(0).toUpperCase() + name.slice(1))
 }
 
-const ListAppBar = (props) => (
-  <AppBar
-    title={currentMonthName(props.locale)}
-    showMenuIconButton={props.showMenuIconButton}
-    iconElementRight={
-      props.selectedVariation &&
-        <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
-          <DeleteIcon />
-        </IconButton>
-    }
-  />
-)
-
-const InternalList = (props) => (
-  <List>
-    {sortVariations(removeOutdatedVariations(props.variations)).map((variation) => <VariationItem {...props} key={variation.uuid} variation={variation} range={props.range} />)}
-  </List>
-)
-
 const VariationList = (props) => (
   <div>
-    <Desktop>
-      <ListAppBar {...props} showMenuIconButton={false} />
-    </Desktop>
-    <Mobile>
-      <ListAppBar {...props} showMenuIconButton={true} />
-    </Mobile>
-    <div>
-      <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1 }} range={props.range} />
-      <div
-        style={{
-          paddingTop: 60,
-          paddingBottom: 92,
-          zIndex: 0
-        }}
-      >
-        <Desktop>
-          <div
-            style={{
-              width: "40%",
-              margin: "auto"
-            }}
-          >
-            <InternalList {...props} />
-          </div>
-        </Desktop>
-        <Mobile>
-          <InternalList {...props} />
-        </Mobile>
-      </div>
+    <AppBar
+      title={currentMonthName(props.locale)}
+      showMenuIconButton={props.showMenuIconButton}
+      iconElementRight={
+        props.selectedVariation &&
+          <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
+            <DeleteIcon />
+          </IconButton>
+      }
+    />
+    <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />
+    <div
+      style={{
+        paddingTop: 124,
+        paddingBottom: 92,
+        zIndex: 0
+      }}
+    >
+      <List>
+        {sortVariations(removeOutdatedVariations(props.variations)).map((variation) => <VariationItem {...props} key={variation.uuid} variation={variation} range={props.range} />)}
+      </List>
       <AddVariationButton containerElement={<Link to="/variations/new" />} />
     </div>
   </div>

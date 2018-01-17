@@ -14,33 +14,8 @@ import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import ResponsiveSelect from "./responsiveSelect";
 import { setMessage } from "../actions/message";
 import translations from "../translations";
-import { Desktop, Mobile } from "./devices";
 
 const required = value => (value ? undefined : 'This field is required.')
-
-const Fields = (props) => (
-  <div>
-    <ResponsiveSelect
-      name="currency"
-      validate={[required]}
-      label={translations[props.locale].currency}
-      collection={
-        Object.keys(currencyToSymbolMap).reduce((collection, currency) => (
-          { ...collection, [currency]: currency }
-        ), {})
-      }
-    />
-    <ResponsiveSelect
-      name="locale"
-      validate={[required]}
-      label={translations[props.locale].language}
-      collection={
-        Object.keys(translations).reduce((collection, locale) => (
-          { ...collection, [locale]: translations[locale].name }
-        ), {})}
-    />
-  </div>
-)
 
 const SettingsForm = (props) => (
   <div>
@@ -49,16 +24,27 @@ const SettingsForm = (props) => (
       iconElementLeft={<IconButton><BackIcon /></IconButton>}
       iconElementRight={<IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton>}
     />
-    <Desktop>
-      <div style={{ width: "40%", margin: "auto" }}>
-        <Fields {...props} />
-      </div>
-    </Desktop>
-    <Mobile>
-      <div style={{ padding: "0 1em" }}>
-        <Fields {...props} />
-      </div>
-    </Mobile>
+    <div style={{ padding: "0 1em", paddingTop: 64 }}>
+      <ResponsiveSelect
+        name="currency"
+        validate={[required]}
+        label={translations[props.locale].currency}
+        collection={
+          Object.keys(currencyToSymbolMap).reduce((collection, currency) => (
+            { ...collection, [currency]: currency }
+          ), {})
+        }
+      />
+      <ResponsiveSelect
+        name="locale"
+        validate={[required]}
+        label={translations[props.locale].language}
+        collection={
+          Object.keys(translations).reduce((collection, locale) => (
+            { ...collection, [locale]: translations[locale].name }
+          ), {})}
+      />
+    </div>
   </div>
 )
 

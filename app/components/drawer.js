@@ -8,15 +8,17 @@ import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 
 import { connect } from 'react-redux';
-import MediaQuery from 'react-responsive';
 
 import { closeDrawer } from "../actions/drawer";
 import translations from "../translations";
 import Icon from "../icon.png";
-import { Desktop, Mobile } from "./devices";
 
-const Menu = (props) => (
-  <div>
+const Drawer = (props) => (
+  <MaterialDrawer
+    open={props.drawer}
+    docked={false}
+    onRequestChange={props.closeDrawer}
+  >
     <MenuItem
       style={{
         backgroundColor: deepPurple900,
@@ -56,32 +58,8 @@ const Menu = (props) => (
     >
       {translations[props.locale].about}
     </MenuItem>
-  </div>
-)
-
-const Drawer = (props) => {
-  return (
-    <div>
-      <Desktop>
-        <MaterialDrawer
-          open={true}
-          docked={true}
-        >
-          <Menu {...props} />
-        </MaterialDrawer>
-      </Desktop>
-      <Mobile>
-        <MaterialDrawer
-          open={props.drawer}
-          docked={false}
-          onRequestChange={props.closeDrawer}
-        >
-          <Menu {...props} />
-        </MaterialDrawer>
-      </Mobile>
-    </div>
-  );
-};
+  </MaterialDrawer>
+);
 
 function mapStateToProps(state) {
   return ({

@@ -16,7 +16,6 @@ import AppBar from "./appbar";
 import ResponsiveSelect from "./responsiveSelect";
 import { setMessage } from "../actions/message";
 import translations from "../translations";
-import { Desktop, Mobile } from "./devices";
 
 const required = value => (value ? undefined : 'This field is required.')
 
@@ -73,59 +72,6 @@ const labelDataSource = (variations, direction) => (
     .reduce((x, y) => x.includes(y) ? x : [...x, y], [])
 )
 
-const Fields = (props) => (
-  <div>
-    <Field
-      name="amount"
-      component={AmountField}
-      type="number"
-      validate={[required]}
-      label={translations[props.locale].amount}
-      autoFocus
-    />
-    <ResponsiveSelect
-      name="direction"
-      validate={[required]}
-      label={translations[props.locale].direction}
-      collection={
-        {
-          "spending": translations[props.locale].spending,
-          "earning": translations[props.locale].earning
-        }
-      }
-    />
-    <Field
-      name="label"
-      component={LabelField}
-      type="text"
-      label={translations[props.locale].label}
-      dataSource={labelDataSource(props.variations, props.direction)}
-    />
-    <ResponsiveSelect
-      name="frequency"
-      validate={[required]}
-      label={translations[props.locale].frequency}
-      collection={
-        {
-          "one-time": translations[props.locale].oneTime,
-          "recurring": translations[props.locale].recurring
-        }
-      }
-    />
-    {
-      props.frequency === "one-time" &&
-        <Field
-          name="date"
-          component={DateField}
-          type="text"
-          validate={[required]}
-          label={translations[props.locale].date}
-        />
-    }
-    <Field name="uuid" component='input' type="hidden" validate={[required]} />
-  </div>
-)
-
 const VariationForm = (props) => (
   <div>
     <AppBar
@@ -133,16 +79,56 @@ const VariationForm = (props) => (
       iconElementLeft={<IconButton><BackIcon /></IconButton>}
       iconElementRight={props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined}
     />
-    <Desktop>
-      <div style={{ width: "40%", margin: "auto" }}>
-        <Fields {...props} />
-      </div>
-    </Desktop>
-    <Mobile>
-      <div style={{ padding: "0 1em" }}>
-        <Fields {...props} />
-      </div>
-    </Mobile>
+    <div style={{ padding: "0 1em", paddingTop: 64 }}>
+      <Field
+        name="amount"
+        component={AmountField}
+        type="number"
+        validate={[required]}
+        label={translations[props.locale].amount}
+        autoFocus
+      />
+      <ResponsiveSelect
+        name="direction"
+        validate={[required]}
+        label={translations[props.locale].direction}
+        collection={
+          {
+            "spending": translations[props.locale].spending,
+            "earning": translations[props.locale].earning
+          }
+        }
+      />
+      <Field
+        name="label"
+        component={LabelField}
+        type="text"
+        label={translations[props.locale].label}
+        dataSource={labelDataSource(props.variations, props.direction)}
+      />
+      <ResponsiveSelect
+        name="frequency"
+        validate={[required]}
+        label={translations[props.locale].frequency}
+        collection={
+          {
+            "one-time": translations[props.locale].oneTime,
+            "recurring": translations[props.locale].recurring
+          }
+        }
+      />
+      {
+        props.frequency === "one-time" &&
+          <Field
+            name="date"
+            component={DateField}
+            type="text"
+            validate={[required]}
+            label={translations[props.locale].date}
+          />
+      }
+      <Field name="uuid" component='input' type="hidden" validate={[required]} />
+    </div>
   </div>
 )
 

@@ -2,16 +2,14 @@ import React from 'react';
 import MaterialAppBar from 'material-ui/AppBar';
 import { connect } from 'react-redux';
 import { openDrawer } from "../actions/drawer";
-import { Desktop, Mobile } from "./devices";
 
 const AppBar = (props) => (
   <MaterialAppBar
-    style={{ display: "flex" }}
+    style={{ position: "fixed", top: 0, width: "100%" }}
     title={props.title}
     onLeftIconButtonClick={props.onLeftIconButtonClick || props.openDrawer}
     iconElementLeft={props.iconElementLeft}
     iconElementRight={props.iconElementRight}
-    showMenuIconButton={props.showMenuIconButton}
   />
 )
 

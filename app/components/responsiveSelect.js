@@ -2,7 +2,6 @@ import React from 'react';
 import { Field } from 'redux-form';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { Desktop, Mobile } from "./devices";
 
 const MobileField = ({ label, collection, ...others }) => (
   <div style={{
@@ -65,17 +64,8 @@ const DesktopField = ({ collection, ...others }) => (
   </Field>
 )
 
-const ResponsiveSelect = (props) => {
-  return (
-    <div>
-      <Desktop>
-        <DesktopField {...props} />
-      </Desktop>
-      <Mobile>
-        <MobileField {...props} />
-      </Mobile>
-    </div>
-  );
-};
+const ResponsiveSelect = (props) => (
+  <MobileField {...props} />
+)
 
 export default ResponsiveSelect;

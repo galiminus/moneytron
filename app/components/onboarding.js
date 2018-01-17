@@ -21,7 +21,7 @@ const Onboarding = (props) => (
     <img
       style={{
         margin: "5vh 0",
-        height: 128
+        height: 148
       }}
       src={Icon}
     />
@@ -32,16 +32,6 @@ const Onboarding = (props) => (
         fontSize: "1.2em"
       }}
     >
-      <p>
-        {translations[props.locale].welcome}
-      </p>
-      <p>
-        {translations[props.locale].askQuestions}
-      </p>
-      <FlatButton
-        label={translations[props.locale].startOnboarding}
-        backgroundColor={deepPurple100}
-      />
     </div>
   </div>
 )

@@ -1,8 +1,5 @@
 export default {
   "en-US": {
-    welcome: "MoneyTron is a new way to manage your budget on a day-to-day basis.",
-    askQuestions: "First we need to ask you a few questions to get started.",
-    startOnboarding: "Let's start!",
     name: "English",
     settings: "Settings",
     about: "About MoneyTron",
@@ -36,9 +33,6 @@ export default {
     }
   },
   "fr-FR": {
-    welcome: "MoneyTron est un nouvel outil pour gérer votre budget quotidien.",
-    askQuestions: "Nous devons vous poser quelques questions pour commencer.",
-    startOnboarding: "C'est parti !",
     name: "Français",
     settings: "Configuration",
     about: "À propos de MoneyTron",

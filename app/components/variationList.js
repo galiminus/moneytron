@@ -47,7 +47,7 @@ const VariationList = (props) => (
           </IconButton>
       }
     />
-    <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />
+    {props.variations.length > 0 && <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />}
     <div
       style={{
         paddingTop: 124,

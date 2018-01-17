@@ -6,15 +6,12 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import DatePicker from 'material-ui/DatePicker';
 import AutoComplete from 'material-ui/AutoComplete';
 
-import UUID from 'uuid-js';
-
 import { connect, dispatch } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { addVariation } from '../actions/variations';
 import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import AppBar from "./appbar";
 import ResponsiveSelect from "./responsiveSelect";
-import { setMessage } from "../actions/message";
 import translations from "../translations";
 
 const required = value => (value ? undefined : 'This field is required.')
@@ -117,16 +114,7 @@ const VariationForm = (props) => (
           }
         }
       />
-      {
-        props.frequency === "one-time" &&
-          <Field
-            name="date"
-            component={DateField}
-            type="text"
-            validate={[required]}
-            label={translations[props.locale].date}
-          />
-      }
+      <Field name="date" component='input' type="hidden" validate={[required]} />
       <Field name="uuid" component='input' type="hidden" validate={[required]} />
     </div>
   </div>
@@ -137,7 +125,7 @@ const selector = formValueSelector('variation');
 const mapStateToProps = (state) => {
   return {
     initialValues: {
-      uuid: UUID.create().toString(),
+      uuid: new Date().getTime().toString(),
       amount: null,
       direction: "spending",
       frequency: "one-time",

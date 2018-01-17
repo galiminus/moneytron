@@ -52,12 +52,6 @@ const Drawer = (props) => (
     >
       {translations[props.locale].settings}
     </MenuItem>
-    <Divider />
-    <MenuItem
-      containerElement={<Link to="/about" />}
-    >
-      {translations[props.locale].about}
-    </MenuItem>
   </MaterialDrawer>
 );
 

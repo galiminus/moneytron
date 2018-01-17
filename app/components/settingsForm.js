@@ -12,7 +12,6 @@ import { Field, reduxForm } from 'redux-form';
 import { updateConfiguration } from '../actions/configuration';
 import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import ResponsiveSelect from "./responsiveSelect";
-import { setMessage } from "../actions/message";
 import translations from "../translations";
 
 const required = value => (value ? undefined : 'This field is required.')

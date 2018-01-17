@@ -20,7 +20,6 @@
   "dependencies": {
     "babel-runtime": "6.x",
     "currency-symbol-map": "^4.0.3",
-    "file-loader": "^1.1.6",
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
@@ -35,10 +34,7 @@
     "redux": "^3.7.2",
     "redux-form": "^7.1.1",
     "redux-localstorage": "^0.4.1",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
-    "url-loader": "^0.6.2",
-    "uuid-js": "^0.7.5"
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "babel-core": "6.x",
@@ -61,11 +57,13 @@
     "eslint-plugin-jsx-a11y": "3.x",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-react": "latest",
+    "file-loader": "^1.1.6",
     "husky": "^0.12.0",
     "image-webpack-loader": "^3.4.2",
     "open-browser-webpack-plugin": "0.0.3",
     "style-loader": "~0.13.1",
     "svg-inline-loader": "^0.8.0",
+    "url-loader": "^0.6.2",
     "validate-commit-msg": "2.x",
     "webpack": "latest",
     "webpack-dev-server": "latest"

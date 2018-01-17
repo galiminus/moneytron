@@ -1,7 +1,6 @@
 import reducers from "./reducers";
 import { compose, applyMiddleware, createStore, combineReducers } from 'redux';
 import logger from 'redux-logger';
-import thunk from 'redux-thunk';
 import persistState from 'redux-localstorage';
 
 import { Route } from 'react-router'
@@ -12,7 +11,6 @@ import history from "./history";
 const historyMiddleware = routerMiddleware(history);
 
 const enhancer = compose(
-  applyMiddleware(thunk),
   applyMiddleware(logger),
   applyMiddleware(historyMiddleware),
   persistState(['variations', 'configuration'], {

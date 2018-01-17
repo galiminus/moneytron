@@ -1,13 +1,11 @@
 import moment from "moment";
 
-const CURRENT_DATE = new Date();
-
 export function removeOutdatedVariations(variations) {
   return (variations.reduce((filteredVariations, variation) => {
     if (variation.frequency === "recurring") {
       filteredVariations.push(variation);
     }
-    if (variation.frequency === "one-time" && moment(variation.date).isSame(CURRENT_DATE, "month")) {
+    if (variation.frequency === "one-time" && moment(variation.date).isSame(moment(), "month")) {
       filteredVariations.push(variation);
     }
     return (filteredVariations);
@@ -37,7 +35,7 @@ export function computeAmount(variation, range = "day") {
 export function filterCurrentVariations(variations, range) {
   return (variations.reduce((filteredVariations, variation) => {
     const date = moment(variation.date);
-    if (variation.frequency === "one-time" && date.isSame(CURRENT_DATE, range)) {
+    if (variation.frequency === "one-time" && date.isSame(moment(), range)) {
       filteredVariations.push(variation);
     }
     return (filteredVariations);
@@ -96,8 +94,8 @@ export function computeTotalRangeAmount(variations, range = "day") {
 
 
   const start = moment(variations.sort((variation1, variation2) => ( variation1.date - variation2.date))[0].date).startOf('month');
-  const endOfMonth = moment(CURRENT_DATE).endOf("month");
-  const end = { "day": moment(CURRENT_DATE), "month": moment(CURRENT_DATE).endOf("month") }[range];
+  const endOfMonth = moment().endOf("month");
+  const end = { "day": moment(), "month": moment().endOf("month") }[range];
 
   let totalAmount = 0;
   for (let n = 0; n < end.diff(start, 'days') + 1; n++) {

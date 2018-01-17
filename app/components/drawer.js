@@ -40,12 +40,6 @@ const Menu = (props) => (
     </MenuItem>
 
     <MenuItem
-      containerElement={<Link to="/variations/week" />}
-    >
-    {translations[props.locale].range["week"]}
-    </MenuItem>
-
-    <MenuItem
       containerElement={<Link to="/variations/month" />}
     >
     {translations[props.locale].range["month"]}

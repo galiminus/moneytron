@@ -24,17 +24,14 @@ export default {
     estimate: "Estimate",
     range: {
       "day": "By day",
-      "week": "By week",
       "month": "By month",
     },
     currentRange: {
       "day": "today",
-      "week": "this week",
       "month": "this month"
     },
     shortRange: {
       "day": "d.",
-      "week": "w.",
       "month": "m."
     }
   },
@@ -63,17 +60,14 @@ export default {
     estimate: "Estimation",
     range: {
       "day": "Par jour",
-      "week": "Par semaine",
       "month": "Par mois",
     },
     currentRange: {
       "day": "aujourd'hui",
-      "week": "cette semaine",
       "month": "ce mois"
     },
     shortRange: {
       "day": "j.",
-      "week": "s.",
       "month": "m."
     }
   }

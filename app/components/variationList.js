@@ -75,7 +75,7 @@ const VariationList = (props) => (
       <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1 }} range={props.range} />
       <div
         style={{
-          paddingTop: 68,
+          paddingTop: 60,
           paddingBottom: 92,
           zIndex: 0
         }}

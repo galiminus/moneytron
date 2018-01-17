@@ -9,7 +9,7 @@ import { removeOutdatedVariations, computeDailyAmount, computeCurrentRangeAmount
 import translations from "../translations";
 
 const VariationSummary = (props) => {
-  const dailyAmount = Math.floor(computeTotalRangeAmount(props.variations, props.range));
+  const dailyAmount = computeTotalRangeAmount(props.variations, props.range);
 
   return (
     <Paper style={props.style}>

@@ -30,7 +30,7 @@ const VariationSummary = (props) => {
                   textTransform: "lowercase"
                 }}
               >
-                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(Math.abs(dailyAmount))} ${translations[props.locale].range[props.range]}`}
+                {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(Math.abs(dailyAmount))}`}
               </div>
               <span
                 style={{

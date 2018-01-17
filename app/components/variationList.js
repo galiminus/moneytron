@@ -12,6 +12,7 @@ import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
 import { removeOutdatedVariations } from "../utils/variations";
+import translations from "../translations";
 
 import { Link } from 'react-router-dom';
 
@@ -34,19 +35,10 @@ const sortVariations = (variations) => {
   }));
 }
 
-const currentMonthName = (locale) => {
-  const currentTime = moment();
-  currentTime.locale(locale);
-
-  let name = currentTime.format("MMMM");
-
-  return (name.charAt(0).toUpperCase() + name.slice(1))
-}
-
 const VariationList = (props) => (
   <div>
     <AppBar
-      title={currentMonthName(props.locale)}
+      title={translations[props.locale].range[props.range]}
       showMenuIconButton={props.showMenuIconButton}
       iconElementRight={
         props.selectedVariation &&

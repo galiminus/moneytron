@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", e => {
   store.dispatch(updateConfiguration({
     currency: "EUR",
     locale: "en-US",
-    onboarding: true,
+    onboarding: "welcome",
     ...(store.getState().configuration || {})
   }));
 

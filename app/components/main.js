@@ -12,7 +12,7 @@ import Onboarding from './onboarding';
 import PageTransition from 'react-router-page-transition';
 
 const Main = (props) => {
-  if (props.onboarding && false) {
+  if (props.onboarding !== "done") {
     return (
       <Onboarding />
     )
@@ -36,6 +36,7 @@ const Main = (props) => {
 
 const mapStateToProps = state => {
   return {
+    variations: state.variations,
     onboarding: state.configuration.onboarding
   }
 }

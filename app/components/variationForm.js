@@ -3,13 +3,11 @@ import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import DoneIcon from 'material-ui/svg-icons/action/done';
-import DatePicker from 'material-ui/DatePicker';
 import AutoComplete from 'material-ui/AutoComplete';
 
 import { connect, dispatch } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { addVariation } from '../actions/variations';
-import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import AppBar from "./appbar";
 import ResponsiveSelect from "./responsiveSelect";
 import translations from "../translations";

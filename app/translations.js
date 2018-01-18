@@ -1,5 +1,10 @@
 export default {
   "en-US": {
+    welcomeText: "MoneyTron automatically computes your daily budget to help you manage your money.",
+    startOnboarding: "Configure",
+    incomeQuestion: "What is your average monthly income?",
+    spendingQuestion: "How much have you spent since the beginning of the month?",
+    nextQuestion: "Next",
     name: "English",
     settings: "Settings",
     about: "About MoneyTron",
@@ -33,6 +38,11 @@ export default {
     }
   },
   "fr-FR": {
+    welcomeText: "MoneyTron calcule automatiquement votre budget quotidien pour vous aider à maîtriser vos dépenses.",
+    startOnboarding: "Configurer",
+    incomeQuestion: "Quel est votre revenu mensuel moyen?",
+    spendingQuestion: "Combien avez-vous dépensé depuis le début du mois?",
+    nextQuestion: "Continuer",
     name: "Français",
     settings: "Configuration",
     about: "À propos de MoneyTron",

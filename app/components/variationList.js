@@ -2,18 +2,24 @@ import React from 'react';
 import MaterialAppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
-import { List } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import ArrowDropDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import ArrowDropUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
+import { deepPurple100, red900, green900 } from 'material-ui/styles/colors';
+
+import {List, ListItem, makeSelectable} from 'material-ui/List';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import VariationItem from "./variationItem";
 import AddVariationButton from './addVariationButton';
 import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
 import { removeOutdatedVariations } from "../utils/variations";
 import translations from "../translations";
-
+import { setSelectedVariation } from "../actions/variations";
+import { spreadToText } from "../utils/dates";
+import { computeAmount } from "../utils/variations";
 import { Link } from 'react-router-dom';
 
 const sortVariations = (variations) => {
@@ -33,6 +39,34 @@ const sortVariations = (variations) => {
     }
     return (variation1.date < variation2.date);
   }));
+}
+
+let SelectableList = makeSelectable(List);
+
+const VariationItemAmount = (props) => {
+  return (
+    <span>
+      <span>{new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(props.variation.amount)}</span>
+      <div
+        style={{
+          fontSize: "0.7em",
+          color: "#444",
+          paddingLeft: 3,
+          float: "right",
+          textAlign: "right"
+        }}
+      >
+        <div>
+          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeAmount(props.variation, props.range))}/${translations[props.locale].shortRange[props.range]}`}
+        </div>
+        <div>
+          {
+            props.variation.frequency === "one-time" ? translations[props.locale].untilEndOfTheMonth : translations[props.locale].everyMonth
+          }
+        </div>
+      </div>
+    </span>
+  );
 }
 
 const VariationList = (props) => (
@@ -55,9 +89,32 @@ const VariationList = (props) => (
         zIndex: 0
       }}
     >
-      <List>
-        {sortVariations(removeOutdatedVariations(props.variations)).map((variation) => <VariationItem {...props} key={variation.uuid} variation={variation} range={props.range} />)}
-      </List>
+      <SelectableList
+        value={props.selectedVariation}
+      >
+        {sortVariations(removeOutdatedVariations(props.variations)).map((variation) =>
+           React.Children.toArray([
+             <ListItem
+              value={variation.uuid}
+               onClick={() => props.selectedVariation == variation.uuid ? props.setSelectedVariation(null) : props.setSelectedVariation(variation.uuid)}
+               primaryText={<VariationItemAmount variation={variation} locale={props.locale} range={props.range} currency={props.currency} />}
+               secondaryText={
+                 <p
+                   style={{
+                     fontSize: "0.7em",
+                     marginTop: 2,
+                     fontWeight: "bold"
+                   }}
+                 >
+                   {variation.label}
+                 </p>
+               }
+               leftIcon={variation.direction === "spending" ? <ArrowDropDownIcon color={red900} /> : <ArrowDropUpIcon color={green900} />}
+             />,
+             <Divider />
+           ])
+        )}
+      </SelectableList>
       <AddVariationButton containerElement={<Link to="/variations/new" />} />
     </div>
   </div>
@@ -68,13 +125,15 @@ function mapStateToProps(state, props) {
     variations: state.variations,
     selectedVariation: state.selectedVariation,
     range: props.match.params.range || "day",
-    locale: state.configuration.locale
+    locale: state.configuration.locale,
+    currency: state.configuration.currency
   });
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeVariation: (uuid) => dispatch(removeVariation(uuid))
+    removeVariation: (uuid) => dispatch(removeVariation(uuid)),
+    setSelectedVariation: (uuid) => dispatch(setSelectedVariation(uuid))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(VariationList);

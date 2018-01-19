@@ -19,6 +19,7 @@ const required = value => (value ? undefined : 'This field is required.')
 const SettingsForm = (props) => (
   <div>
     <AppBar
+    title={translations[props.locale].settings}
       onLeftIconButtonClick={props.history.goBack}
       iconElementLeft={<IconButton><BackIcon /></IconButton>}
       iconElementRight={<IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton>}

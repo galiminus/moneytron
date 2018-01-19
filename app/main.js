@@ -15,7 +15,6 @@ import { ConnectedRouter } from 'react-router-redux'
 import store from "./store";
 import history from "./history";
 
-
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: deepPurple900,

@@ -4,6 +4,7 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import AutoComplete from 'material-ui/AutoComplete';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { connect, dispatch } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -31,21 +32,26 @@ const OnboardingFormBuilder = (options = {}) => {
     <Dialog
       open={props.configuration.onboarding === options.form}
       title={options.title}
-      actions={
+      modal={true}
+      actions={[
         <FlatButton
+          label={translations[props.locale].skipQuestion}
+          primary={true}
+          onClick={props.handleSkip}
+        />,
+        <RaisedButton
           label={translations[props.locale].nextQuestion}
           primary={true}
           onClick={props.handleSubmit}
           disabled={!props.valid}
         />
-      }
+      ]}
     >
       <Field
         name="amount"
         component={AmountField}
         type="number"
         validate={[required]}
-        label={translations[props.locale].amount}
         autoFocus
       />
       <Field name="date" component='input' type="hidden" validate={[required]} />
@@ -61,6 +67,8 @@ const OnboardingFormBuilder = (options = {}) => {
       initialValues: {
         uuid: new Date().getTime().toString(),
         amount: null,
+        direction: "earning",
+        frequency: "recurring",
         date: new Date(),
         ...options.initialValues
       },
@@ -71,6 +79,9 @@ const OnboardingFormBuilder = (options = {}) => {
 
   const mapDispatchToProps = (dispatch, props) => {
     return {
+      handleSkip: () => {
+        dispatch(updateConfiguration({ onboarding: options.next }));
+      },
       onSubmit: (variation) => {
         dispatch(addVariation(variation));
         dispatch(updateConfiguration({ onboarding: options.next }));

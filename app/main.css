@@ -2,6 +2,12 @@ body {
   margin: 0px;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 select:focus {
   outline: 0;
   border-bottom: 1px solid #311B92 !important;

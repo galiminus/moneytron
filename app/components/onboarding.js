@@ -43,6 +43,9 @@ const Onboarding = (props) => (
       <RaisedButton
         label={translations[props.locale].startOnboarding}
         onClick={() => props.setOnboardingStep("incomeQuestion")}
+        style={{
+          marginTop: "1em"
+        }}
       />
       {
         React.createElement(onboardingFormBuilder({
@@ -52,7 +55,8 @@ const Onboarding = (props) => (
           initialValues: {
             direction: "earning",
             frequency: "recurring",
-            date: moment().startOf('month')
+            date: moment().startOf('month'),
+            label: translations[props.locale].incomeQuestionLabel
           }
         }))
       }
@@ -64,7 +68,8 @@ const Onboarding = (props) => (
           initialValues: {
             direction: "spending",
             frequency: "one-time",
-            date: moment().startOf('month')
+            date: moment().startOf('month'),
+            label: translations[props.locale].spendingQuestionLabel
           }
         }))
       }

@@ -25,7 +25,7 @@ const enhancer = compose(
       return (
         {
           variations,
-          currentDate: new Date(currentDate),
+          currentDate: (currentDate ? new Date(currentDate) : new Date()),
           ...other
         }
       );

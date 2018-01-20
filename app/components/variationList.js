@@ -75,24 +75,26 @@ const VariationItemAmount = (props) => {
   );
 }
 
+
+// : (false &&
+//  <IconMenu
+//    iconButtonElement={<IconButton><FilterIcon /></IconButton>}
+//  >
+//    <MenuItem primaryText="Refresh" />
+//    <MenuItem primaryText="Help" />
+//    <MenuItem primaryText="Sign out" />
+//  </IconMenu>
+// )
 const VariationList = (props) => (
   <div>
     <AppBar
       title={translations[props.locale].estimate}
       showMenuIconButton={props.showMenuIconButton}
       iconElementRight={
-        props.selectedVariation ? (
+        props.selectedVariation && (
           <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
             <DeleteIcon />
           </IconButton>
-        ) : (false &&
-          <IconMenu
-            iconButtonElement={<IconButton><FilterIcon /></IconButton>}
-          >
-            <MenuItem primaryText="Refresh" />
-            <MenuItem primaryText="Help" />
-            <MenuItem primaryText="Sign out" />
-          </IconMenu>
         )
       }
     />

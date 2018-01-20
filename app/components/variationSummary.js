@@ -43,12 +43,12 @@ class VariationSummary extends React.Component {
       }}>
         <List style={{ padding: 0 }}>
           <ListItem
+            style={{ padding: "8px 0" }}
             onClick={() => this.setState({ datePickerOpen: true })}
             primaryText={
               <div>
                 <div
                   style={{
-                    lineHeight: "32px",
                     fontSize: "0.8em",
                     color: "rgba(0, 0, 0, 0.54)",
                     display: "inline-block"
@@ -68,7 +68,7 @@ class VariationSummary extends React.Component {
                     display: "inline-block",
                     position: "absolute",
                     right: 16,
-                    top: 18
+                    top: 10
                   }}
                 >
                   {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(dailyAmount))}`}

@@ -70,8 +70,11 @@ const labelDataSource = (variations, direction) => (
 
 const VariationForm = (props) => (
   <FullscreenDialog
+    style={{
+      background: "white"
+    }}
     open={props.open}
-    onRequestClose={props.onRequestClose}
+    onRequestClose={props.handleClose}
     closeIcon={<BackIcon />}
     actionButton={
       props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined
@@ -148,6 +151,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
+    handleClose: (variation) => {
+      ownProps.onRequestClose();
+      dispatchProps.resetForm();
+    },
     onSubmit: (variation) => {
       ownProps.onRequestClose();
       dispatchProps.addVariation(variation);

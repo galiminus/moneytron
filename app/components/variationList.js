@@ -94,7 +94,6 @@ const VariationList = (props) => (
       <SelectableList
         value={props.selectedVariation}
       >
-        {console.log("RENDER", props.variations, props.currentDate)}
         {sortVariations(filterVariations(props.variations, props.currentDate, props.range)).map((variation) =>
            React.Children.toArray([
              <ListItem

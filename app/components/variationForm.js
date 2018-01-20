@@ -4,9 +4,10 @@ import TextField from 'material-ui/TextField';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 import AutoComplete from 'material-ui/AutoComplete';
+import FullscreenDialog from 'material-ui-fullscreen-dialog';
 
 import { connect, dispatch } from 'react-redux';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field, reduxForm, formValueSelector, reset } from 'redux-form';
 import { addVariation } from '../actions/variations';
 import AppBar from "./appbar";
 import ResponsiveSelect from "./responsiveSelect";
@@ -68,13 +69,15 @@ const labelDataSource = (variations, direction) => (
 )
 
 const VariationForm = (props) => (
-  <div>
-    <AppBar
-      onLeftIconButtonClick={props.history.goBack}
-      iconElementLeft={<IconButton><BackIcon /></IconButton>}
-      iconElementRight={props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined}
-    />
-    <div style={{ padding: "0 1em", paddingTop: 64 }}>
+  <FullscreenDialog
+    open={props.open}
+    onRequestClose={props.onRequestClose}
+    closeIcon={<BackIcon />}
+    actionButton={
+      props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined
+    }
+  >
+    <div style={{ padding: "0 1em" }}>
       <Field
         name="amount"
         component={AmountField}
@@ -112,22 +115,18 @@ const VariationForm = (props) => (
           }
         }
       />
-      <Field name="date" component='input' type="hidden" validate={[required]} />
-      <Field name="uuid" component='input' type="hidden" validate={[required]} />
     </div>
-  </div>
+  </FullscreenDialog>
 )
 
 const selector = formValueSelector('variation');
 
 const mapStateToProps = (state) => {
   return {
+    open: state.variationForm,
     initialValues: {
-      uuid: new Date().getTime().toString(),
-      amount: null,
       direction: "spending",
-      frequency: "one-time",
-      date: new Date()
+      frequency: "one-time"
     },
     currency: state.configuration.currency,
     locale: state.configuration.locale,
@@ -139,7 +138,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    addVariation: (variation) => { dispatch(addVariation(variation)) }
+    addVariation: (variation) => { dispatch(addVariation(variation)) },
+    resetForm: () => { dispatch(reset("variation")) }
   }
 }
 
@@ -149,10 +149,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...stateProps,
     ...dispatchProps,
     onSubmit: (variation) => {
+      ownProps.onRequestClose();
       dispatchProps.addVariation(variation);
-      ownProps.history.goBack();
+      dispatchProps.resetForm();
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(reduxForm({ form: "variation" })(VariationForm));
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(reduxForm({ form: "variation", enableReinitialize: false })(VariationForm));

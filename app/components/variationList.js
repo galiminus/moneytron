@@ -15,12 +15,13 @@ import AddVariationButton from './addVariationButton';
 import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
-import { removeOutdatedVariations } from "../utils/variations";
+import { filterVariations } from "../utils/variations";
 import translations from "../translations";
 import { setSelectedVariation } from "../actions/variations";
+import { openVariationForm, closeVariationForm } from "../actions/variationForm";
 import { spreadToText } from "../utils/dates";
 import { computeAmount } from "../utils/variations";
-import { Link } from 'react-router-dom';
+import VariationForm from './variationForm';
 
 const sortVariations = (variations) => {
   return (variations.sort((variation1, variation2) => {
@@ -72,7 +73,7 @@ const VariationItemAmount = (props) => {
 const VariationList = (props) => (
   <div>
     <AppBar
-      title={translations[props.locale].range[props.range]}
+      title={translations[props.locale].estimate}
       showMenuIconButton={props.showMenuIconButton}
       iconElementRight={
         props.selectedVariation &&
@@ -81,10 +82,11 @@ const VariationList = (props) => (
           </IconButton>
       }
     />
-    {props.variations.length > 0 && <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />}
+
+    <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />
     <div
       style={{
-        paddingTop: 124,
+        paddingTop: 128,
         paddingBottom: 92,
         zIndex: 0
       }}
@@ -92,7 +94,8 @@ const VariationList = (props) => (
       <SelectableList
         value={props.selectedVariation}
       >
-        {sortVariations(removeOutdatedVariations(props.variations)).map((variation) =>
+        {console.log("RENDER", props.variations, props.currentDate)}
+        {sortVariations(filterVariations(props.variations, props.currentDate, props.range)).map((variation) =>
            React.Children.toArray([
              <ListItem
               value={variation.uuid}
@@ -115,8 +118,9 @@ const VariationList = (props) => (
            ])
         )}
       </SelectableList>
-      <AddVariationButton containerElement={<Link to="/variations/new" />} />
+      <AddVariationButton onClick={props.openVariationForm} />
     </div>
+    <VariationForm onRequestClose={props.closeVariationForm} />
   </div>
 )
 
@@ -126,14 +130,17 @@ function mapStateToProps(state, props) {
     selectedVariation: state.selectedVariation,
     range: props.match.params.range || "day",
     locale: state.configuration.locale,
-    currency: state.configuration.currency
+    currency: state.configuration.currency,
+    currentDate: state.currentDate
   });
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     removeVariation: (uuid) => dispatch(removeVariation(uuid)),
-    setSelectedVariation: (uuid) => dispatch(setSelectedVariation(uuid))
+    setSelectedVariation: (uuid) => dispatch(setSelectedVariation(uuid)),
+    openVariationForm: () => dispatch(openVariationForm()),
+    closeVariationForm: () => dispatch(closeVariationForm())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(VariationList);

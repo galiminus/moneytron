@@ -1,7 +1,7 @@
 export default {
   "en-US": {
     welcomeText: "MoneyTron automatically computes your daily budget to help you manage your money.",
-    startOnboarding: "Configure",
+    startOnboarding: "Get started",
     incomeQuestion: "What is your average monthly income?",
     incomeQuestionLabel: "Monthly income",
     spendingQuestion: "How much have you spent since the beginning of the month?",
@@ -27,10 +27,6 @@ export default {
     everyMonth: "every month",
     youShouldNotSpendMoreThan: "You can spend up to",
     estimate: "Estimate",
-    range: {
-      "day": "By day",
-      "month": "By month",
-    },
     currentRange: {
       "day": "today",
       "month": "this month"
@@ -42,7 +38,7 @@ export default {
   },
   "fr-FR": {
     welcomeText: "MoneyTron calcule automatiquement votre budget quotidien pour vous aider à maîtriser vos dépenses.",
-    startOnboarding: "Configurer",
+    startOnboarding: "Commencer",
     incomeQuestion: "Quel est votre revenu mensuel moyen ?",
     incomeQuestionLabel: "Revenu mensuel",
     spendingQuestion: "Combien avez-vous dépensé depuis le début du mois ?",
@@ -65,19 +61,17 @@ export default {
     date: "Date",
     untilEndOfTheMonth: "jusqu'à la fin du mois",
     everyMonth: "tout les mois",
-    youShouldNotSpendMoreThan: "Vous pouvez dépenser jusqu'à",
-    estimate: "Estimation",
-    range: {
-      "day": "Par jour",
-      "month": "Par mois",
+    youShouldNotSpendMoreThan: {
+      past: "Au CURRENT_DATE vous pouviez dépenser jusqu'à",
+      today: "Aujourd'hui vous pouvez dépenser jusqu'à",
+      future: "Au CURRENT_DATE vous pourrez dépenser jusqu'à"
     },
+    estimate: "Estimation",
     currentRange: {
-      "day": "aujourd'hui",
-      "month": "ce mois"
+      "day": "aujourd'hui"
     },
     shortRange: {
-      "day": "j.",
-      "month": "m."
+      "day": "j."
     }
   }
 }

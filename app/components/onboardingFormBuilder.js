@@ -65,11 +65,9 @@ const OnboardingFormBuilder = (options = {}) => {
     return {
       configuration: state.configuration,
       initialValues: {
-        uuid: new Date().getTime().toString(),
         amount: null,
         direction: "earning",
         frequency: "recurring",
-        date: new Date(),
         ...options.initialValues
       },
       currency: state.configuration.currency,

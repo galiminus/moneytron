@@ -5,7 +5,9 @@ import Paper from 'material-ui/Paper';
 import { deepPurple900 } from 'material-ui/styles/colors';
 import { Link } from 'react-router-dom';
 import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
+
+import ByDayIcon from 'material-ui/svg-icons/action/today';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
 
 import { connect } from 'react-redux';
 
@@ -34,20 +36,15 @@ const Drawer = (props) => (
       />
     </MenuItem>
 
-    <Subheader>{translations[props.locale].estimate}</Subheader>
     <MenuItem
+      leftIcon={<ByDayIcon />}
       containerElement={<Link to="/variations/day" />}
     >
-      {translations[props.locale].range["day"]}
-    </MenuItem>
-
-    <MenuItem
-      containerElement={<Link to="/variations/month" />}
-    >
-    {translations[props.locale].range["month"]}
+      {translations[props.locale].estimate}
     </MenuItem>
     <Divider />
     <MenuItem
+      leftIcon={<SettingsIcon />}
       containerElement={<Link to="/settings" />}
     >
       {translations[props.locale].settings}

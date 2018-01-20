@@ -1,18 +1,17 @@
 import moment from "moment";
 
-export function removeOutdatedVariations(variations) {
+export function filterVariations(variations, date, range) {
   return (variations.reduce((filteredVariations, variation) => {
-    if (variation.frequency === "recurring") {
+    if (variation.frequency === "recurring" && moment(variation.date).startOf('month').isSameOrBefore(date)) {
       filteredVariations.push(variation);
-    }
-    if (variation.frequency === "one-time" && moment(variation.date).isSame(moment(), "month")) {
+    } else if (variation.frequency === "one-time" && moment(variation.date).isSame(moment(date), range) && moment(variation.date).isSameOrBefore(moment(date).endOf('day'))) {
       filteredVariations.push(variation);
     }
     return (filteredVariations);
   }, []))
 }
 
-export function computeAmount(variation, range = "day") {
+export function computeAmount(variation, range) {
   let amount = Number(variation.amount);
   let daysInMonth = moment(variation.date).daysInMonth();
   let endOfMonth = moment(moment(variation.date).endOf('month'));
@@ -32,30 +31,6 @@ export function computeAmount(variation, range = "day") {
   }
 }
 
-export function filterCurrentVariations(variations, range) {
-  return (variations.reduce((filteredVariations, variation) => {
-    const date = moment(variation.date);
-    if (variation.frequency === "one-time" && date.isSame(moment(), range)) {
-      filteredVariations.push(variation);
-    }
-    return (filteredVariations);
-  }, []))
-}
-
-export function computeCurrentRangeAmount(variations, range = "day") {
-  const currentVariations = filterCurrentVariations(variations, range);
-  return (currentVariations.reduce((totalAmount, variation) => {
-    let amount = Number(variation.amount);
-
-    if (variation.direction === "spending") {
-      amount = -amount;
-    }
-
-    totalAmount += Number(amount);
-    return (totalAmount);
-  }, 0));
-}
-
 export function computeDailyAmountAt(variation, date) {
   let amount = Number(variation.amount);
   let daysInMonth = moment(date).daysInMonth();
@@ -71,7 +46,11 @@ export function computeDailyAmountAt(variation, date) {
   }
 }
 
-export function computeTotalRangeAmount(variations, range = "day") {
+export function computeTotalRangeAmount(variations, currentDate, range) {
+  if (variations.length === 0) {
+    return (0);
+  }
+
   const computeRecurringAmountAt = (variations, date) => {
     let daysInMonth = moment(date).daysInMonth();
     let initialAmount = variations.reduce((initialAmount, variation) => {
@@ -92,10 +71,9 @@ export function computeTotalRangeAmount(variations, range = "day") {
     return (initialAmount);
   }
 
-
   const start = moment(variations.sort((variation1, variation2) => ( variation1.date - variation2.date))[0].date).startOf('month');
-  const endOfMonth = moment().endOf("month");
-  const end = { "day": moment(), "month": moment().endOf("month") }[range];
+  const endOfMonth = moment(currentDate).endOf("month");
+  const end = { "day": moment(currentDate), "month": moment(currentDate).endOf("month") }[range];
 
   let totalAmount = 0;
   for (let n = 0; n < end.diff(start, 'days') + 1; n++) {

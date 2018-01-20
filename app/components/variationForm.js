@@ -77,7 +77,7 @@ const VariationForm = (props) => (
     onRequestClose={props.handleClose}
     closeIcon={<BackIcon />}
     actionButton={
-      props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined
+      props.amount ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined
     }
   >
     <div style={{ padding: "0 1em" }}>
@@ -135,7 +135,8 @@ const mapStateToProps = (state) => {
     locale: state.configuration.locale,
     variations: state.variations,
     frequency: selector(state, 'frequency'),
-    direction: selector(state, 'direction')
+    direction: selector(state, 'direction'),
+    amount: selector(state, 'amount')
   }
 }
 

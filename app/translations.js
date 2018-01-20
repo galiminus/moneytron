@@ -9,6 +9,7 @@ export default {
     nextQuestion: "Save",
     skipQuestion: "Skip",
     name: "English",
+    cancel: "Cancel",
     settings: "Settings",
     about: "About MoneyTron",
     language: "Language",
@@ -25,15 +26,14 @@ export default {
     date: "Date",
     untilEndOfTheMonth: "until the end of the month",
     everyMonth: "every month",
-    youShouldNotSpendMoreThan: "You can spend up to",
-    estimate: "Estimate",
-    currentRange: {
-      "day": "today",
-      "month": "this month"
+    youShouldNotSpendMoreThan: {
+      past: "On CURRENT_DATE you could have spent up to",
+      today: "Today you can spend up to",
+      future: "On CURRENT_DATE you can spend up to"
     },
+    estimate: "Estimate",
     shortRange: {
-      "day": "d.",
-      "month": "m."
+      "day": "d."
     }
   },
   "fr-FR": {
@@ -45,6 +45,7 @@ export default {
     spendingQuestionLabel: "Déjà dépensé",
     nextQuestion: "Continuer",
     name: "Français",
+    cancel: "Annuler",
     settings: "Configuration",
     about: "À propos de MoneyTron",
     language: "Langue",
@@ -67,9 +68,6 @@ export default {
       future: "Au CURRENT_DATE vous pourrez dépenser jusqu'à"
     },
     estimate: "Estimation",
-    currentRange: {
-      "day": "aujourd'hui"
-    },
     shortRange: {
       "day": "j."
     }

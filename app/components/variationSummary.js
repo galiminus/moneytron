@@ -5,6 +5,7 @@ import { FlatButton } from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
 import DatePicker from 'material-ui/DatePicker';
 import moment from 'moment';
+import { deepPurple900 } from 'material-ui/styles/colors';
 
 import { connect } from 'react-redux';
 
@@ -20,7 +21,7 @@ class VariationSummary extends React.Component {
 
   currentDateText() {
     const now = moment();
-    const currentDate = moment(this.props.currentDate);
+    const currentDate = moment(this.props.currentDate).locale(this.props.locale);
 
     let rawText;
     if (currentDate.isBefore(now, 'day')) {
@@ -37,19 +38,20 @@ class VariationSummary extends React.Component {
     const dailyAmount = computeTotalRangeAmount(this.props.variations, this.props.currentDate, this.props.range);
 
     return (
-      <Paper style={this.props.style}>
+      <Paper style={{
+        ...this.props.style
+      }}>
         <List style={{ padding: 0 }}>
           <ListItem
-            innerDivStyle={{ padding: "0px 16px 16px 16px" }}
             onClick={() => this.setState({ datePickerOpen: true })}
             primaryText={
               <div>
                 <div
                   style={{
                     lineHeight: "32px",
-                    paddingTop: 8,
                     fontSize: "0.8em",
-                    color: "rgba(0, 0, 0, 0.54)"
+                    color: "rgba(0, 0, 0, 0.54)",
+                    display: "inline-block"
                   }}
                 >
                   {this.currentDateText()}
@@ -58,7 +60,15 @@ class VariationSummary extends React.Component {
                 <div
                   style={{
                     fontWeight: "bold",
-                    textTransform: "lowercase"
+                    textTransform: "lowercase",
+                    background: deepPurple900,
+                    padding: 6,
+                    borderRadius: 3,
+                    color: "white",
+                    display: "inline-block",
+                    position: "absolute",
+                    right: 16,
+                    top: 18
                   }}
                 >
                   {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(dailyAmount))}`}
@@ -79,7 +89,11 @@ class VariationSummary extends React.Component {
             this.props.setCurrentDate(value);
             this.setState({ datePickerOpen: false });
           }}
+          value={this.props.currentDate}
           onDismiss={() => this.setState({ datePickerOpen: false })}
+          DateTimeFormat={Intl.DateTimeFormat}
+          locale={this.props.locale}
+          cancelLabel={translations[this.props.locale].cancel}
         />
       </Paper>
     );

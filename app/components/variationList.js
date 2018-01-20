@@ -5,13 +5,18 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import Divider from 'material-ui/Divider';
 import ArrowDropDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import ArrowDropUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
-import { deepPurple100, red900, green900 } from 'material-ui/styles/colors';
+
+import { red900, green900 } from 'material-ui/styles/colors';
 
 import {List, ListItem, makeSelectable} from 'material-ui/List';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
 import AddVariationButton from './addVariationButton';
+import FilterIcon from 'material-ui/svg-icons/content/filter-list';
+import MenuItem from 'material-ui/MenuItem';
+import IconMenu from 'material-ui/IconMenu';
+
 import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
@@ -76,17 +81,26 @@ const VariationList = (props) => (
       title={translations[props.locale].estimate}
       showMenuIconButton={props.showMenuIconButton}
       iconElementRight={
-        props.selectedVariation &&
+        props.selectedVariation ? (
           <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
             <DeleteIcon />
           </IconButton>
+        ) : (false &&
+          <IconMenu
+            iconButtonElement={<IconButton><FilterIcon /></IconButton>}
+          >
+            <MenuItem primaryText="Refresh" />
+            <MenuItem primaryText="Help" />
+            <MenuItem primaryText="Sign out" />
+          </IconMenu>
+        )
       }
     />
 
     <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />
     <div
       style={{
-        paddingTop: 128,
+        paddingTop: 120,
         paddingBottom: 92,
         zIndex: 0
       }}

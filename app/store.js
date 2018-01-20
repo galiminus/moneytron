@@ -13,7 +13,7 @@ const historyMiddleware = routerMiddleware(history);
 const enhancer = compose(
   applyMiddleware(logger),
   applyMiddleware(historyMiddleware),
-  persistState(['variations', 'configuration', 'drawer', 'form', 'router', 'selectedVariation', 'currentDate'], {
+  persistState(['variations', 'configuration', 'drawer', 'form', 'router', 'selectedVariation'], {
     deserialize: (json) => {
       let { variations, currentDate, ...other } = JSON.parse(json);
 
@@ -25,7 +25,7 @@ const enhancer = compose(
       return (
         {
           variations,
-          currentDate: (currentDate ? new Date(currentDate) : new Date()),
+          // currentDate: (currentDate ? new Date(currentDate) : new Date()),
           ...other
         }
       );

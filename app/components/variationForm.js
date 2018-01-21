@@ -6,6 +6,7 @@ import DoneIcon from 'material-ui/svg-icons/action/done';
 import AutoComplete from 'material-ui/AutoComplete';
 import FullscreenDialog from 'material-ui-fullscreen-dialog';
 import DatePicker from 'material-ui/DatePicker';
+import moment from 'moment';
 
 import { connect, dispatch } from 'react-redux';
 import { Field, reduxForm, formValueSelector, reset } from 'redux-form';
@@ -52,7 +53,6 @@ const EndField = ({ input: { onBlur, onChange, ...inputProps }, label, locale, d
   <DatePicker
     floatingLabelText={label}
     autoOk={true}
-    hideCalendarDate={true}
     { ...inputProps }
     { ...custom }
     minDate={new Date()}
@@ -147,7 +147,7 @@ const mapStateToProps = (state) => {
     initialValues: {
       direction: "spending",
       frequency: "one-time",
-      end: new Date()
+      end: moment().add(2, 'month').startOf('month').toDate()
     },
     currency: state.configuration.currency,
     locale: state.configuration.locale,

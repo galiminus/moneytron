@@ -18,6 +18,8 @@ import history from "./history";
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: deepPurple900,
+    primary2Color: deepPurple900,
+    pickerHeaderColor: deepPurple900
   }
 });
 

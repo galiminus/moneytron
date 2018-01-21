@@ -56,7 +56,11 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
         variationAmount = -variationAmount;
       }
 
-      if (variation.direction !== "project" && variation.frequency === "recurring") {
+      if (variation.direction === "project" && variationDate.isSame(date, 'month') && variationDate.isSame(date, 'day')) {
+        return (initialAmount + variationAmount / moment(variation.end).diff(moment(variation.date).subtract(1, "day"), "days"));
+      }
+
+      if (variation.frequency === "recurring") {
         variationDate = moment(date).startOf('month');
       }
       if (variationDate.isSame(date, 'month') && variationDate.isSame(date, 'day')) {

@@ -32,13 +32,15 @@ import VariationForm from './variationForm';
 
 const sortVariations = (variations) => {
   return (variations.sort((variation1, variation2) => {
+    if (variation2.direction === "project") {
+      return (-1);
+    }
     if (variation1.direction === "earning" && variation1.frequency === "recurring") {
       return (1);
     }
     if (variation2.direction === "earning" && variation2.frequency === "recurring") {
       return (-1);
     }
-
     if (variation1.frequency === "one-time" && variation2.frequency === "recurring") {
       return (-1);
     }

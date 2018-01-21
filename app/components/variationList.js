@@ -14,8 +14,10 @@ import moment from 'moment';
 
 import AddVariationButton from './addVariationButton';
 import FilterIcon from 'material-ui/svg-icons/content/filter-list';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import MenuItem from 'material-ui/MenuItem';
 import IconMenu from 'material-ui/IconMenu';
+import { Link } from 'react-router-dom';
 
 import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
@@ -47,6 +49,18 @@ const sortVariations = (variations) => {
   }));
 }
 
+const targetDateText = (props) => {
+  if (props.variation.direction === "project") {
+    return (translations[props.locale].untilDate.replace("END_DATE", moment(props.variation.end).locale(props.locale).format("LL")));
+  }
+  if (props.variation.frequency === "one-time") {
+    return (translations[props.locale].untilEndOfTheMonth);
+  }
+  if (props.variation.frequency === "recurring") {
+    return (translations[props.locale].everyMonth);
+  }
+}
+
 let SelectableList = makeSelectable(List);
 
 const VariationItemAmount = (props) => {
@@ -66,9 +80,7 @@ const VariationItemAmount = (props) => {
           {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeAmount(props.variation, props.range))} / ${translations[props.locale].shortRange[props.range]}`}
         </div>
         <div>
-          {
-            props.variation.frequency === "one-time" ? translations[props.locale].untilEndOfTheMonth : translations[props.locale].everyMonth
-          }
+          {targetDateText(props)}
         </div>
       </div>
     </span>
@@ -88,16 +100,27 @@ const FilterMenuButton = (props) => (
     }}
     iconButtonElement={<IconButton><FilterIcon color="white" /></IconButton>}
   >
+    {
+      Object.entries({ "recurringOnly": { frequency: "one-time"}, "oneTimeOnly": { frequency: "one-time" } }).map(([name, filters]) => (
+        <MenuItem primaryText={translations[props.locale].filters[name]} key={name} />
+      ))
+    }
   </IconMenu>
+)
+
+const SettingsButton = (props) => (
+  <IconButton containerElement={<Link to="/settings" />}>
+    <SettingsIcon color="white" />
+  </IconButton>
 )
 
 const VariationList = (props) => (
   <div>
     <AppBar
       title={translations[props.locale].estimate}
-      showMenuIconButton={props.showMenuIconButton}
+      showMenuIconButton={false}
       iconElementRight={
-        props.selectedVariation ? <DeleteVariationButton {...props} /> : null
+        props.selectedVariation ? <DeleteVariationButton {...props} /> : <SettingsButton {...props} />
       }
     />
 
@@ -129,7 +152,7 @@ const VariationList = (props) => (
                    {variation.label}
                  </p>
                }
-               leftIcon={variation.direction === "spending" ? <ArrowDropDownIcon color={red900} /> : <ArrowDropUpIcon color={green900} />}
+               leftIcon={variation.direction === "spending" || variation.direction === "project" ? <ArrowDropDownIcon color={red900} /> : <ArrowDropUpIcon color={green900} />}
              />,
              <Divider />
            ])
@@ -137,7 +160,7 @@ const VariationList = (props) => (
       </SelectableList>
       <AddVariationButton onClick={props.openVariationForm} />
     </div>
-    <VariationForm onRequestClose={props.closeVariationForm} />
+    { props.formOpen && <VariationForm onRequestClose={props.closeVariationForm} /> }
   </div>
 )
 
@@ -148,7 +171,9 @@ function mapStateToProps(state, props) {
     range: props.match.params.range || "day",
     locale: state.configuration.locale,
     currency: state.configuration.currency,
-    currentDate: state.currentDate
+    currentDate: state.currentDate,
+    formOpen: state.variationForm,
+    currentFilter: state.currentFilter
   });
 }
 

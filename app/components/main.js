@@ -6,7 +6,6 @@ import { Route, Switch, withRouter } from 'react-router'
 import VariationForm from './variationForm';
 import SettingsForm from './settingsForm';
 import VariationList from './variationList';
-import Drawer from './drawer';
 import About from './about';
 import Onboarding from './onboarding';
 import PageTransition from 'react-router-page-transition';
@@ -18,18 +17,14 @@ const Main = (props) => {
     )
   } else {
     return (
-      <div>
-        <Drawer />
-        <Switch>
-          <Route exact path="/" component={VariationList} />
-          <Route exact path="/variations" component={VariationList} />
-          <Route exact path="/variations/new" component={VariationForm} />
-          <Route exact path="/variations/:range" component={VariationList} />
+      <Switch>
+        <Route exact path="/" component={VariationList} />
+        <Route exact path="/variations" component={VariationList} />
+        <Route exact path="/variations/new" component={VariationForm} />
 
-          <Route exact path="/settings" component={SettingsForm} />
-          <Route exact path="/about" component={About} />
-        </Switch>
-      </div>
+        <Route exact path="/settings" component={SettingsForm} />
+        <Route exact path="/about" component={About} />
+      </Switch>
     )
   }
 }

@@ -2,6 +2,13 @@ import moment from "moment";
 
 export function filterVariations(variations, date, range) {
   return (variations.reduce((filteredVariations, variation) => {
+    if (variation.direction === "project") {
+      if (moment(date).isBetween(moment(variation.date).startOf('day'), moment(variation.end).endOf('day'))) {
+        filteredVariations.push(variation);
+      }
+      return (filteredVariations);
+    }
+
     if (variation.frequency === "recurring" && moment(variation.date).startOf('month').isSameOrBefore(date)) {
       filteredVariations.push(variation);
     } else if (variation.frequency === "one-time" && moment(variation.date).isSame(moment(date), range) && moment(variation.date).isSameOrBefore(moment(date).endOf('day'))) {
@@ -16,33 +23,21 @@ export function computeAmount(variation, range) {
   let daysInMonth = moment(variation.date).daysInMonth();
   let endOfMonth = moment(moment(variation.date).endOf('month'));
 
-  if (variation.direction === "spending") {
+  if (variation.direction === "spending" || variation.direction === "project") {
     amount = -amount;
+  }
+  if (variation.direction === "project") {
+    return (amount / moment(variation.end).diff(moment(variation.date).subtract(1, "day"), "days"));
   }
   if (variation.frequency === "one-time") {
     if (range == "day") {
-      return (amount / (endOfMonth.diff(moment(variation.date).subtract(1, "day"), "days")));
+      return (amount / endOfMonth.diff(moment(variation.date).subtract(1, "day"), "days"));
     }
     if (range == "month") {
       return (amount)
     }
   } else {
     return (amount / { "day": daysInMonth, "month": 1 }[range]);
-  }
-}
-
-export function computeDailyAmountAt(variation, date) {
-  let amount = Number(variation.amount);
-  let daysInMonth = moment(date).daysInMonth();
-  let endOfMonth = moment(moment(date).endOf('month'));
-
-  if (variation.direction === "spending") {
-    amount = -amount;
-  }
-  if (variation.frequency === "one-time") {
-    return (amount / (endOfMonth.diff(variation.date, `days`)));
-  } else {
-    return (amount / daysInMonth);
   }
 }
 
@@ -57,10 +52,11 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
       let variationAmount = Number(variation.amount);
       let variationDate = moment(variation.date);
 
-      if (variation.direction === "spending") {
+      if (variation.direction === "spending" || variation.direction === "project") {
         variationAmount = -variationAmount;
       }
-      if (variation.frequency === "recurring") {
+
+      if (variation.direction !== "project" && variation.frequency === "recurring") {
         variationDate = moment(date).startOf('month');
       }
       if (variationDate.isSame(date, 'month') && variationDate.isSame(date, 'day')) {

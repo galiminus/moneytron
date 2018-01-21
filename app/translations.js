@@ -16,19 +16,26 @@ export default {
     currency: "Currency",
     save: "Save",
     amount: "Amount",
-    label: "Label",
-    direction: "Direction",
+    label: "Category",
+    direction: "Type",
     spending: "Spending",
     earning: "Earning",
+    project: "Project",
+    end: "Target date",
     frequency: "Frequency",
     oneTime: "One-time",
     recurring: "Recurring every month",
     date: "Date",
     untilEndOfTheMonth: "until the end of the month",
     everyMonth: "every month",
+    untilDate: "until END_DATE",
     estimate: "Estimates",
     shortRange: {
       "day": "d."
+    },
+    filters: {
+      recurringOnly: "Recurring only",
+      oneTimeOnly: "One-time only"
     },
     projects: "Projects"
   },
@@ -48,19 +55,26 @@ export default {
     currency: "Monnaie",
     save: "Enregister",
     amount: "Montant",
-    label: "Description",
-    direction: "Direction",
+    label: "Category",
+    direction: "Type",
     spending: "Dépense",
     earning: "Gain",
+    project: "Projet",
+    end: "Échéance",
     frequency: "Fréquence",
     oneTime: "Une seule fois",
     recurring: "Tout les mois",
     date: "Date",
     untilEndOfTheMonth: "jusqu'à la fin du mois",
     everyMonth: "tout les mois",
+    untilDate: "jusqu'au END_DATE",
     estimate: "Estimations",
     shortRange: {
       "day": "j."
+    },
+    filters: {
+      recurringOnly: "Fixe seulement",
+      oneTimeOnly: "Ponctuel seulement"
     },
     projects: "Projets"
   }

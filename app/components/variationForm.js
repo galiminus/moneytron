@@ -5,6 +5,7 @@ import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 import AutoComplete from 'material-ui/AutoComplete';
 import FullscreenDialog from 'material-ui-fullscreen-dialog';
+import DatePicker from 'material-ui/DatePicker';
 
 import { connect, dispatch } from 'react-redux';
 import { Field, reduxForm, formValueSelector, reset } from 'redux-form';
@@ -47,16 +48,18 @@ const LabelField =  ({ input, label, meta: { touched, error }, ...custom }) => (
   />
 )
 
-const DateField = ({ input, label, meta: { touched, error }, ...custom }) => (
+const EndField = ({ input: { onBlur, onChange, ...inputProps }, label, locale, defaultDate, meta: { touched, error }, ...custom }) => (
   <DatePicker
     floatingLabelText={label}
-    fullWidth={true}
-    { ...input }
+    autoOk={true}
+    hideCalendarDate={true}
+    { ...inputProps }
     { ...custom }
-    maxDate={new Date()}
-    value={input.value ? new Date(input.value) : new Date()}
-    onChange={(event, value) => {
-      input.onChange(value)
+    minDate={new Date()}
+    DateTimeFormat={Intl.DateTimeFormat}
+    locale={locale}
+    onChange={(_, value) => {
+      onChange(value)
     }}
   />
 )
@@ -73,7 +76,7 @@ const VariationForm = (props) => (
     style={{
       background: "white"
     }}
-    open={props.open}
+    open={true}
     onRequestClose={props.handleClose}
     closeIcon={<BackIcon />}
     actionButton={
@@ -96,7 +99,8 @@ const VariationForm = (props) => (
         collection={
           {
             "spending": translations[props.locale].spending,
-            "earning": translations[props.locale].earning
+            "earning": translations[props.locale].earning,
+            "project": translations[props.locale].project
           }
         }
       />
@@ -107,17 +111,31 @@ const VariationForm = (props) => (
         label={translations[props.locale].label}
         dataSource={labelDataSource(props.variations, props.direction)}
       />
-      <ResponsiveSelect
-        name="frequency"
-        validate={[required]}
-        label={translations[props.locale].frequency}
-        collection={
-          {
-            "one-time": translations[props.locale].oneTime,
-            "recurring": translations[props.locale].recurring
-          }
-        }
-      />
+      {
+        (props.direction === 'earning' || props.direction === 'spending') &&
+          <ResponsiveSelect
+            name="frequency"
+            validate={[required]}
+            label={translations[props.locale].frequency}
+            collection={
+              {
+                "one-time": translations[props.locale].oneTime,
+                "recurring": translations[props.locale].recurring
+              }
+            }
+          />
+      }
+      {
+        props.direction === 'project' &&
+          <Field
+            name="end"
+            component={EndField}
+            type="text"
+            validate={[required]}
+            label={translations[props.locale].end}
+            locale={props.locale}
+          />
+      }
     </div>
   </FullscreenDialog>
 )
@@ -126,10 +144,10 @@ const selector = formValueSelector('variation');
 
 const mapStateToProps = (state) => {
   return {
-    open: state.variationForm,
     initialValues: {
       direction: "spending",
-      frequency: "one-time"
+      frequency: "one-time",
+      end: new Date()
     },
     currency: state.configuration.currency,
     locale: state.configuration.locale,

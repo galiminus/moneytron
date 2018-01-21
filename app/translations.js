@@ -26,15 +26,11 @@ export default {
     date: "Date",
     untilEndOfTheMonth: "until the end of the month",
     everyMonth: "every month",
-    youShouldNotSpendMoreThan: {
-      past: "On CURRENT_DATE you could have spent up to",
-      today: "Today you can spend up to",
-      future: "On CURRENT_DATE you can spend up to"
-    },
-    estimate: "Estimate",
+    estimate: "Estimates",
     shortRange: {
       "day": "d."
-    }
+    },
+    projects: "Projects"
   },
   "fr-FR": {
     welcomeText: "MoneyTron calcule automatiquement votre budget quotidien pour vous aider à maîtriser vos dépenses.",
@@ -62,14 +58,10 @@ export default {
     date: "Date",
     untilEndOfTheMonth: "jusqu'à la fin du mois",
     everyMonth: "tout les mois",
-    youShouldNotSpendMoreThan: {
-      past: "Au CURRENT_DATE vous pouviez dépenser jusqu'à",
-      today: "Aujourd'hui vous pouvez dépenser jusqu'à",
-      future: "Au CURRENT_DATE vous pourrez dépenser jusqu'à"
-    },
-    estimate: "Estimation",
+    estimate: "Estimations",
     shortRange: {
       "day": "j."
-    }
+    },
+    projects: "Projets"
   }
 }

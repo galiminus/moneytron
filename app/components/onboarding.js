@@ -48,30 +48,32 @@ const Onboarding = (props) => (
         }}
       />
       {
-        React.createElement(onboardingFormBuilder({
-          form: "incomeQuestion",
-          next: "spendingQuestion",
-          title: translations[props.locale].incomeQuestion,
-          initialValues: {
-            direction: "earning",
-            frequency: "recurring",
-            date: moment().startOf('month'),
-            label: translations[props.locale].incomeQuestionLabel
-          }
-        }))
+        props.step === "incomeQuestion" &&
+          React.createElement(onboardingFormBuilder({
+            form: "incomeQuestion",
+            next: "spendingQuestion",
+            title: translations[props.locale].incomeQuestion,
+            initialValues: {
+              direction: "earning",
+              frequency: "recurring",
+              date: moment().startOf('month').toDate(),
+              label: translations[props.locale].incomeQuestionLabel
+            }
+          }))
       }
       {
-        React.createElement(onboardingFormBuilder({
-          form: "spendingQuestion",
-          next: "done",
-          title: translations[props.locale].spendingQuestion,
-          initialValues: {
-            direction: "spending",
-            frequency: "one-time",
-            date: moment().startOf('month'),
-            label: translations[props.locale].spendingQuestionLabel
-          }
-        }))
+        props.step === "spendingQuestion" &&
+          React.createElement(onboardingFormBuilder({
+            form: "spendingQuestion",
+            next: "done",
+            title: translations[props.locale].spendingQuestion,
+            initialValues: {
+              direction: "spending",
+              frequency: "one-time",
+              date: moment().startOf('month').toDate(),
+              label: translations[props.locale].spendingQuestionLabel
+            }
+          }))
       }
     </div>
   </div>

@@ -77,7 +77,7 @@ const VariationForm = (props) => (
     onRequestClose={props.handleClose}
     closeIcon={<BackIcon />}
     actionButton={
-      props.amount ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined
+      props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined
     }
   >
     <div style={{ padding: "0 1em" }}>

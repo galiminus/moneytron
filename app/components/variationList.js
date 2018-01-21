@@ -63,7 +63,7 @@ const VariationItemAmount = (props) => {
         }}
       >
         <div>
-          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeAmount(props.variation, props.range))}/${translations[props.locale].shortRange[props.range]}`}
+          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeAmount(props.variation, props.range))} / ${translations[props.locale].shortRange[props.range]}`}
         </div>
         <div>
           {
@@ -75,27 +75,29 @@ const VariationItemAmount = (props) => {
   );
 }
 
+const DeleteVariationButton = (props) => (
+  <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
+    <DeleteIcon color="white" />
+  </IconButton>
+)
 
-// : (false &&
-//  <IconMenu
-//    iconButtonElement={<IconButton><FilterIcon /></IconButton>}
-//  >
-//    <MenuItem primaryText="Refresh" />
-//    <MenuItem primaryText="Help" />
-//    <MenuItem primaryText="Sign out" />
-//  </IconMenu>
-// )
+const FilterMenuButton = (props) => (
+  <IconMenu
+    style={{
+      width: "100%"
+    }}
+    iconButtonElement={<IconButton><FilterIcon color="white" /></IconButton>}
+  >
+  </IconMenu>
+)
+
 const VariationList = (props) => (
   <div>
     <AppBar
       title={translations[props.locale].estimate}
       showMenuIconButton={props.showMenuIconButton}
       iconElementRight={
-        props.selectedVariation && (
-          <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
-            <DeleteIcon />
-          </IconButton>
-        )
+        props.selectedVariation ? <DeleteVariationButton {...props} /> : null
       }
     />
 
@@ -110,7 +112,7 @@ const VariationList = (props) => (
       <SelectableList
         value={props.selectedVariation}
       >
-        {sortVariations(filterVariations(props.variations, props.currentDate, props.range)).map((variation) =>
+        {sortVariations(filterVariations(props.variations, props.currentDate, 'month')).map((variation) =>
            React.Children.toArray([
              <ListItem
               value={variation.uuid}

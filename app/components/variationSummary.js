@@ -19,23 +19,8 @@ class VariationSummary extends React.Component {
       this.refs.datePicker.openDialog();
   }
 
-  currentDateText() {
-    const now = moment();
-    const currentDate = moment(this.props.currentDate).locale(this.props.locale);
-
-    let rawText;
-    if (currentDate.isBefore(now, 'day')) {
-      rawText = translations[this.props.locale].youShouldNotSpendMoreThan['past'];
-    } else if (currentDate.isSame(now, 'day')) {
-      rawText = translations[this.props.locale].youShouldNotSpendMoreThan['today'];
-    } else {
-      rawText = translations[this.props.locale].youShouldNotSpendMoreThan['future'];
-    }
-    return (rawText.replace("CURRENT_DATE", currentDate.format("D MMM")))
-  }
-
   render() {
-    const dailyAmount = computeTotalRangeAmount(this.props.variations, this.props.currentDate, this.props.range);
+    const dailyAmount = computeTotalRangeAmount(this.props.variations, this.props.currentDate, 'day');
 
     return (
       <Paper style={{
@@ -49,12 +34,12 @@ class VariationSummary extends React.Component {
               <div>
                 <div
                   style={{
-                    fontSize: "0.8em",
-                    color: "rgba(0, 0, 0, 0.54)",
-                    display: "inline-block"
+                    color: "rgba(0, 0, 0, 0.74)",
+                    display: "inline-block",
+                    fontWeight: "bold"
                   }}
                 >
-                  {this.currentDateText()}
+                  {moment(this.props.currentDate).locale(this.props.locale).format("LL")}
                 </div>
 
                 <div
@@ -71,7 +56,7 @@ class VariationSummary extends React.Component {
                     top: 10
                   }}
                 >
-                  {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(dailyAmount))}`}
+                {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(dailyAmount))} / ${translations[this.props.locale].shortRange[this.props.range]}`}
                 </div>
               </div>
             }

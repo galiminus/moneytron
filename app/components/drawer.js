@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import Divider from 'material-ui/Divider';
 
 import ByDayIcon from 'material-ui/svg-icons/action/today';
+import ProjectIcon from 'material-ui/svg-icons/device/airplanemode-active';
+
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 
 import { connect } from 'react-redux';
@@ -38,10 +40,18 @@ const Drawer = (props) => (
 
     <MenuItem
       leftIcon={<ByDayIcon />}
-      containerElement={<Link to="/variations/day" />}
+      containerElement={<Link to="/variations" />}
     >
       {translations[props.locale].estimate}
     </MenuItem>
+
+    <MenuItem
+      leftIcon={<ProjectIcon />}
+      containerElement={<Link to="/projects" />}
+    >
+      {translations[props.locale].projects}
+    </MenuItem>
+
     <Divider />
     <MenuItem
       leftIcon={<SettingsIcon />}

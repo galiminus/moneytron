@@ -6,9 +6,9 @@ import Divider from 'material-ui/Divider';
 import ArrowDropDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import ArrowDropUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
 
-import { red900, green900 } from 'material-ui/styles/colors';
+import { red900, green900, grey300 } from 'material-ui/styles/colors';
 
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -22,34 +22,13 @@ import { Link } from 'react-router-dom';
 import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
-import { filterVariations } from "../utils/variations";
+import { filterVariations, groupVariationsByCategory, sortVariations } from "../utils/variations";
 import translations from "../translations";
-import { setSelectedVariation } from "../actions/variations";
+import { setSelectedVariations } from "../actions/variations";
 import { openVariationForm, closeVariationForm } from "../actions/variationForm";
 import { spreadToText } from "../utils/dates";
 import { computeAmount } from "../utils/variations";
 import VariationForm from './variationForm';
-
-const sortVariations = (variations) => {
-  return (variations.sort((variation1, variation2) => {
-    if (variation2.direction === "project") {
-      return (-1);
-    }
-    if (variation1.direction === "earning" && variation1.frequency === "recurring") {
-      return (1);
-    }
-    if (variation2.direction === "earning" && variation2.frequency === "recurring") {
-      return (-1);
-    }
-    if (variation1.frequency === "one-time" && variation2.frequency === "recurring") {
-      return (-1);
-    }
-    if (variation1.frequency === "recurring" && variation2.frequency === "one-time") {
-      return (1);
-    }
-    return (variation1.date < variation2.date);
-  }));
-}
 
 const targetDateText = (props) => {
   if (props.variation.direction === "project") {
@@ -62,8 +41,6 @@ const targetDateText = (props) => {
     return (translations[props.locale].everyMonth);
   }
 }
-
-let SelectableList = makeSelectable(List);
 
 const VariationItemAmount = (props) => {
   return (
@@ -79,7 +56,7 @@ const VariationItemAmount = (props) => {
         }}
       >
         <div>
-          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(computeAmount(props.variation, props.range))} / ${translations[props.locale].shortRange[props.range]}`}
+          {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(props.variation.dailyAmount)} / ${translations[props.locale].shortRange[props.range]}`}
         </div>
         <div>
           {targetDateText(props)}
@@ -90,7 +67,7 @@ const VariationItemAmount = (props) => {
 }
 
 const DeleteVariationButton = (props) => (
-  <IconButton onClick={() => props.removeVariation(props.selectedVariation)}>
+  <IconButton onClick={() => props.selectedVariations.forEach((uuid) => props.removeVariation(uuid))}>
     <DeleteIcon color="white" />
   </IconButton>
 )
@@ -116,63 +93,103 @@ const SettingsButton = (props) => (
   </IconButton>
 )
 
-const VariationList = (props) => (
-  <div>
-    <AppBar
-      title={translations[props.locale].estimate}
-      showMenuIconButton={false}
-      iconElementRight={
-        props.selectedVariation ? <DeleteVariationButton {...props} /> : <SettingsButton {...props} />
-      }
-    />
+const prepareVariations = (props) => {
+  let variations;
 
-    <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />
-    <div
-      style={{
-        paddingTop: 120,
-        paddingBottom: 92,
-        zIndex: 0
-      }}
-    >
-      <SelectableList
-        value={props.selectedVariation}
-      >
-        {sortVariations(filterVariations(props.variations, props.currentDate, 'month')).map((variation) =>
-           React.Children.toArray([
-             <ListItem
-              value={variation.uuid}
-               onClick={() => props.selectedVariation == variation.uuid ? props.setSelectedVariation(null) : props.setSelectedVariation(variation.uuid)}
-               primaryText={<VariationItemAmount variation={variation} locale={props.locale} range={props.range} currency={props.currency} />}
-               secondaryText={
-                 <p
-                   style={{
-                     fontSize: "0.7em",
-                     marginTop: 2,
-                     fontWeight: "bold"
-                   }}
-                 >
-                   {variation.label}
-                 </p>
-               }
-               leftIcon={variation.direction === "spending" || variation.direction === "project" ? <ArrowDropDownIcon color={red900} /> : <ArrowDropUpIcon color={green900} />}
-             />,
-             <Divider />
-           ])
-        )}
-      </SelectableList>
-      <AddVariationButton onClick={props.openVariationForm} />
-    </div>
-    { props.formOpen && <VariationForm onRequestClose={props.closeVariationForm} /> }
-  </div>
+  variations = sortVariations(filterVariations(props.variations, props.currentDate, 'month'));
+  if (props.groupByCategory) {
+    return (Object.entries(groupVariationsByCategory(variations)));
+  } else {
+    return (variations.map((variation) => [variation.uuid, [variation]]))
+  }
+}
+
+const computeGroupedVariations = (preparedVariations, range) => (
+  preparedVariations.map(([key, variations]) => {
+    const variation = {
+      label: variations[0].label,
+      direction: variations[0].direction,
+      frequency: variations[0].frequency,
+      amount: variations.reduce((totalAmount, variation) => (totalAmount + Number(variation.amount)), 0),
+      dailyAmount: variations.reduce((totalAmount, variation) => (totalAmount + computeAmount(variation, range)), 0),
+      uuid: key,
+      children: variations.map((variation) => variation.uuid)
+    }
+    return (variation);
+  })
 )
+computeGroupedVariations
+const variationItems = (props, variations) => (
+  variations.map((variation, index) => {
+    const isSelected = props.selectedVariations.includes(variation.children[0]);
+
+    return (
+      <div key={index}>
+        <ListItem
+          style={isSelected ? { background: grey300 } : {}}
+          onClick={() => isSelected ? props.setSelectedVariations([]) : props.setSelectedVariations(variation.children)}
+          primaryText={<VariationItemAmount variation={variation} locale={props.locale} range={props.range} currency={props.currency} />}
+          secondaryText={
+            <p
+              style={{
+                fontSize: "0.7em",
+                marginTop: 2,
+                fontWeight: "bold"
+              }}
+            >
+              {variation.label}
+            </p>
+          }
+          leftIcon={variation.direction === "spending" || variation.direction === "project" ? <ArrowDropDownIcon color={red900} /> : <ArrowDropUpIcon color={green900} />}
+        />
+        <Divider inset={true} />
+      </div>
+    );
+  })
+);
+
+const VariationList = (props) => {
+  const preparedVariations = prepareVariations(props);
+
+  return (
+    <div>
+      <AppBar
+        title={translations[props.locale].estimate}
+        showMenuIconButton={false}
+        iconElementRight={
+          props.selectedVariations.length > 0 ? <DeleteVariationButton {...props} /> : <SettingsButton {...props} />
+        }
+      />
+
+      <VariationSummary style={{ position: "fixed", width: "100%", zIndex: 1, paddingTop: 64 }} range={props.range} />
+      <div
+        style={{
+          paddingTop: 120,
+          paddingBottom: 92,
+          zIndex: 0
+        }}
+      >
+        <List>
+          {
+            preparedVariations.length === 1 ?
+              variationItems(props, preparedVariations[0][1]) : variationItems(props, computeGroupedVariations(preparedVariations, props.range))
+          }
+        </List>
+        <AddVariationButton onClick={props.openVariationForm} />
+      </div>
+      { props.formOpen && <VariationForm onRequestClose={props.closeVariationForm} /> }
+    </div>
+  );
+}
 
 function mapStateToProps(state, props) {
   return ({
     variations: state.variations,
-    selectedVariation: state.selectedVariation,
+    selectedVariations: state.selectedVariations,
     range: props.match.params.range || "day",
     locale: state.configuration.locale,
     currency: state.configuration.currency,
+    groupByCategory: state.configuration.groupByCategory,
     currentDate: state.currentDate,
     formOpen: state.variationForm,
     currentFilter: state.currentFilter
@@ -182,7 +199,7 @@ function mapStateToProps(state, props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     removeVariation: (uuid) => dispatch(removeVariation(uuid)),
-    setSelectedVariation: (uuid) => dispatch(setSelectedVariation(uuid)),
+    setSelectedVariations: (uuid) => dispatch(setSelectedVariations(uuid)),
     openVariationForm: () => dispatch(openVariationForm()),
     closeVariationForm: () => dispatch(closeVariationForm())
   }

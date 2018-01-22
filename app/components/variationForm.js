@@ -52,12 +52,13 @@ const LabelField =  ({ input, label, meta: { touched, error }, ...custom }) => (
 const EndField = ({ input: { onBlur, onChange, ...inputProps }, label, locale, defaultDate, meta: { touched, error }, ...custom }) => (
   <DatePicker
     floatingLabelText={label}
-    autoOk={true}
     { ...inputProps }
     { ...custom }
     minDate={new Date()}
     DateTimeFormat={Intl.DateTimeFormat}
     locale={locale}
+    fullWidth={true}
+    cancelLabel={translations[locale].cancel}
     onChange={(_, value) => {
       onChange(value)
     }}

@@ -6,6 +6,6 @@ export function removeVariation(payload) {
   return { type: "REMOVE_VARIATION", payload };
 }
 
-export function setSelectedVariation(payload) {
-  return { type: "SET_SELECTED_VARIATION", payload };
+export function setSelectedVariations(payload) {
+  return { type: "SET_SELECTED_VARIATIONS", payload };
 }

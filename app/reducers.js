@@ -1,6 +1,6 @@
 import configuration from "./reducers/configuration";
 import variations from "./reducers/variations";
-import selectedVariation from "./reducers/selectedVariation";
+import selectedVariations from "./reducers/selectedVariations";
 import variationForm from "./reducers/variationForm";
 import currentDate from "./reducers/currentDate";
 
@@ -14,7 +14,7 @@ export default combineReducers({
   variationForm,
   variations,
   currentDate,
-  selectedVariation,
+  selectedVariations,
   form: formReducer,
   router: routerReducer
 })

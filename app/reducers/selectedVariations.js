@@ -1,13 +1,13 @@
-export default function (state = null, action) {
+export default function (state = [], action) {
     switch (action.type) {
-    case "SET_SELECTED_VARIATION":
+    case "SET_SELECTED_VARIATIONS":
       return action.payload;
     case "REMOVE_VARIATION":
       if (action.payload === state) {
-        return null;
+        return [];
       }
     case "@@router/LOCATION_CHANGE":
-      return null;
+      return [];
     default:
       return state;
     }

@@ -2,6 +2,8 @@ import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
+import Toggle from 'material-ui/Toggle';
+import Checkbox from 'material-ui/Checkbox';
 
 import currencyToSymbolMap from 'currency-symbol-map/map';
 
@@ -16,10 +18,22 @@ import translations from "../translations";
 
 const required = value => (value ? undefined : 'This field is required.')
 
+const GroupByCategoryToggle = ({ input: { onChange, value, ...inputProps }, label, locale, meta: { touched, error }, ...custom }) => (
+  <Checkbox
+    label={label}
+    {...custom}
+    checked={value ? true : false}
+    onCheck={(event, isInputChecked) => onChange(isInputChecked)}
+    style={{
+      marginTop: 24
+    }}
+  />
+)
+
 const SettingsForm = (props) => (
   <div>
     <AppBar
-    title={translations[props.locale].settings}
+      title={translations[props.locale].settings}
       onLeftIconButtonClick={props.history.goBack}
       iconElementLeft={<IconButton><BackIcon /></IconButton>}
       iconElementRight={<IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton>}
@@ -43,6 +57,11 @@ const SettingsForm = (props) => (
           Object.keys(translations).reduce((collection, locale) => (
             { ...collection, [locale]: translations[locale].name }
           ), {})}
+      />
+      <Field
+        name="groupByCategory"
+        component={GroupByCategoryToggle}
+        label={translations[props.locale].groupByCategory}
       />
     </div>
   </div>

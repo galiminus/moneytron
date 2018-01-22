@@ -24,6 +24,7 @@ export default {
     end: "Target date",
     frequency: "Frequency",
     oneTime: "One-time",
+    groupByCategory: "Group by type and category",
     recurring: "Recurring every month",
     date: "Date",
     untilEndOfTheMonth: "until the end of the month",
@@ -36,8 +37,7 @@ export default {
     filters: {
       recurringOnly: "Recurring only",
       oneTimeOnly: "One-time only"
-    },
-    projects: "Projects"
+    }
   },
   "fr-FR": {
     welcomeText: "MoneyTron calcule automatiquement votre budget quotidien pour vous aider à maîtriser vos dépenses.",
@@ -63,6 +63,7 @@ export default {
     end: "Échéance",
     frequency: "Fréquence",
     oneTime: "Une seule fois",
+    groupByCategory: "Regrouper par type et catégorie",
     recurring: "Tout les mois",
     date: "Date",
     untilEndOfTheMonth: "jusqu'à la fin du mois",
@@ -75,7 +76,6 @@ export default {
     filters: {
       recurringOnly: "Fixe seulement",
       oneTimeOnly: "Ponctuel seulement"
-    },
-    projects: "Projets"
+    }
   }
 }

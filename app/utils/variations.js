@@ -83,3 +83,38 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
 
   return (totalAmount > 0 ? totalAmount : 0)
 }
+
+export function sortVariations(variations) {
+  return (variations.sort((variation1, variation2) => {
+    if (variation2.direction === "project") {
+      return (-1);
+    }
+    if (variation1.direction === "earning" && variation1.frequency === "recurring") {
+      return (1);
+    }
+    if (variation2.direction === "earning" && variation2.frequency === "recurring") {
+      return (-1);
+    }
+    if (variation1.frequency === "one-time" && variation2.frequency === "recurring") {
+      return (-1);
+    }
+    if (variation1.frequency === "recurring" && variation2.frequency === "one-time") {
+      return (1);
+    }
+    return (variation1.date < variation2.date);
+  }));
+}
+
+export function groupVariationsByCategory(variations) {
+  return (
+    variations.reduce((groupedVariations, variation) => {
+      const key = [variation.label, variation.direction, variation.frequency];
+      if (!groupedVariations[key]) {
+        groupedVariations[key] = [];
+      }
+      groupedVariations[key].push(variation);
+
+      return (groupedVariations);
+    }, {})
+  );
+}

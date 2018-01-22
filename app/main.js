@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", e => {
     currency: "EUR",
     locale: "en-US",
     onboarding: "welcome",
+    groupByCategory: false,
     ...(store.getState().configuration || {})
   }));
 

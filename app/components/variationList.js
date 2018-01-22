@@ -164,14 +164,17 @@ const VariationList = (props) => {
             <div
               key={groupingName}
             >
-              <Subheader
-                style={{
-                  fontFamily: "Roboto, sans-serif",
-                  fontWeight: "bold"
-                }}
-              >
-                {translations[props.locale].groupingNames[groupingName]}
-              </Subheader>
+              {
+                variations.length > 0 &&
+                  <Subheader
+                    style={{
+                      fontFamily: "Roboto, sans-serif",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {translations[props.locale].groupingNames[groupingName]}
+                  </Subheader>
+              }
               {
                 props.groupByCategory ?
                   variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range)) :

@@ -5,6 +5,7 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import Divider from 'material-ui/Divider';
 import ArrowDropDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import ArrowDropUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
+import Subheader from 'material-ui/Subheader';
 
 import { red900, green900, grey300 } from 'material-ui/styles/colors';
 
@@ -22,7 +23,7 @@ import { Link } from 'react-router-dom';
 import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
-import { filterVariations, groupVariationsByCategory, sortVariations } from "../utils/variations";
+import { filterVariations, groupVariationsByCategory, sortVariations, groupVariationsByTypeAndFrequency } from "../utils/variations";
 import translations from "../translations";
 import { setSelectedVariations } from "../actions/variations";
 import { openVariationForm, closeVariationForm } from "../actions/variationForm";
@@ -93,19 +94,8 @@ const SettingsButton = (props) => (
   </IconButton>
 )
 
-const prepareVariations = (props) => {
-  let variations;
-
-  variations = sortVariations(filterVariations(props.variations, props.currentDate, 'month'));
-  if (props.groupByCategory) {
-    return (Object.entries(groupVariationsByCategory(variations)));
-  } else {
-    return (variations.map((variation) => [variation.uuid, [variation]]))
-  }
-}
-
-const computeGroupedVariations = (preparedVariations, range) => (
-  preparedVariations.map(([key, variations]) => {
+const computeGroupedVariations = (variations, range) => (
+  variations.map(([key, variations]) => {
     const variation = {
       label: variations[0].label,
       direction: variations[0].direction,
@@ -143,15 +133,13 @@ const variationItems = (props, variations) => (
           }
           leftIcon={variation.direction === "spending" || variation.direction === "project" ? <ArrowDropDownIcon color={red900} /> : <ArrowDropUpIcon color={green900} />}
         />
-        <Divider inset={true} />
+        <Divider inset={variations.indexOf(variation) !== variations.length - 1} />
       </div>
     );
   })
 );
 
 const VariationList = (props) => {
-  const preparedVariations = prepareVariations(props);
-
   return (
     <div>
       <AppBar
@@ -171,12 +159,29 @@ const VariationList = (props) => {
         }}
       >
         <List>
-          {
-            preparedVariations.length === 1 ?
-              variationItems(props, preparedVariations[0][1]) : variationItems(props, computeGroupedVariations(preparedVariations, props.range))
-          }
+        {
+          Object.entries(groupVariationsByTypeAndFrequency(sortVariations(filterVariations(props.variations, props.currentDate, 'month')))).map(([groupingName, variations]) => (
+            <div
+              key={groupingName}
+            >
+              <Subheader
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontWeight: "bold"
+                }}
+              >
+                {translations[props.locale].groupingNames[groupingName]}
+              </Subheader>
+              {
+                props.groupByCategory ?
+                  variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range)) :
+                  variationItems(props, computeGroupedVariations(variations.map((variation) => [variation.uuid, [variation]]), props.range))
+              }
+            </div>
+          ))
+        }
         </List>
-        <AddVariationButton onClick={props.openVariationForm} />
+        <AddVariationButton containerElement={<Link to="/new" />} />
       </div>
       { props.formOpen && <VariationForm onRequestClose={props.closeVariationForm} /> }
     </div>
@@ -197,11 +202,13 @@ function mapStateToProps(state, props) {
   });
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props) => {
   return {
     removeVariation: (uuid) => dispatch(removeVariation(uuid)),
     setSelectedVariations: (uuid) => dispatch(setSelectedVariations(uuid)),
-    openVariationForm: () => dispatch(openVariationForm()),
+    openVariationForm: () => {
+      dispatch(openVariationForm());
+    },
     closeVariationForm: () => dispatch(closeVariationForm())
   }
 }

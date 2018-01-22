@@ -19,9 +19,7 @@ const Main = (props) => {
     return (
       <Switch>
         <Route exact path="/" component={VariationList} />
-        <Route exact path="/variations" component={VariationList} />
-        <Route exact path="/variations/new" component={VariationForm} />
-
+        <Route exact path="/new" component={VariationForm} />
         <Route exact path="/settings" component={SettingsForm} />
         <Route exact path="/about" component={About} />
       </Switch>

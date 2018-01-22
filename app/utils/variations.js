@@ -105,14 +105,36 @@ export function sortVariations(variations) {
   }));
 }
 
+export function groupVariationsByTypeAndFrequency(variations) {
+  return (
+    variations.reduce((groupedVariations, variation) => {
+      let key;
+
+      if (variation.direction === "project") {
+        key = "project"
+      } else if (variation.frequency === "one-time") {
+        key = "oneTime"
+      }  else if (variation.frequency === "recurring") {
+        key = "recurring"
+      }
+      groupedVariations[key].push(variation);
+
+      return (groupedVariations);
+    }, {
+      "oneTime": [],
+      "recurring": [],
+      "project": []
+    })
+  );
+}
+
 export function groupVariationsByCategory(variations) {
   return (
     variations.reduce((groupedVariations, variation) => {
-      const key = [variation.label, variation.direction, variation.frequency];
-      if (!groupedVariations[key]) {
-        groupedVariations[key] = [];
+      if (!groupedVariations[variation.label]) {
+        groupedVariations[variation.label] = [];
       }
-      groupedVariations[key].push(variation);
+      groupedVariations[variation.label].push(variation);
 
       return (groupedVariations);
     }, {})

@@ -24,7 +24,7 @@ export default {
     end: "Target date",
     frequency: "Frequency",
     oneTime: "One-time",
-    groupByCategory: "Group by type and category",
+    groupByCategory: "Group by category",
     recurring: "Recurring every month",
     date: "Date",
     untilEndOfTheMonth: "until the end of the month",
@@ -38,6 +38,11 @@ export default {
     filters: {
       recurringOnly: "Recurring only",
       oneTimeOnly: "One-time only"
+    },
+    groupingNames: {
+      "oneTime": "One-time",
+      "recurring": "Recurring",
+      "project": "Projects"
     }
   },
   "fr-FR": {
@@ -64,7 +69,7 @@ export default {
     end: "Échéance",
     frequency: "Fréquence",
     oneTime: "Une seule fois",
-    groupByCategory: "Regrouper par type et catégorie",
+    groupByCategory: "Regrouper par catégorie",
     recurring: "Tout les mois",
     date: "Date",
     untilEndOfTheMonth: "jusqu'à la fin du mois",
@@ -78,6 +83,12 @@ export default {
     filters: {
       recurringOnly: "Fixe seulement",
       oneTimeOnly: "Ponctuel seulement"
+    },
+    groupingNames: {
+      "oneTime": "Une seule fois",
+      "recurring": "Tout les mois",
+      "project": "Projets"
     }
+
   }
 }

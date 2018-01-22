@@ -4,7 +4,6 @@ import TextField from 'material-ui/TextField';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 import AutoComplete from 'material-ui/AutoComplete';
-import FullscreenDialog from 'material-ui-fullscreen-dialog';
 import DatePicker from 'material-ui/DatePicker';
 import moment from 'moment';
 
@@ -73,18 +72,13 @@ const labelDataSource = (variations, direction) => (
 )
 
 const VariationForm = (props) => (
-  <FullscreenDialog
-    style={{
-      background: "white"
-    }}
-    open={true}
-    onRequestClose={props.handleClose}
-    closeIcon={<BackIcon />}
-    actionButton={
-      props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined
-    }
-  >
-    <div style={{ padding: "0 1em" }}>
+  <div>
+    <AppBar
+      onLeftIconButtonClick={props.history.goBack}
+      iconElementLeft={<IconButton><BackIcon /></IconButton>}
+      iconElementRight={props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined}
+    />
+    <div style={{ padding: "0 1em", paddingTop: 64 }}>
       <Field
         name="amount"
         component={AmountField}
@@ -138,7 +132,7 @@ const VariationForm = (props) => (
           />
       }
     </div>
-  </FullscreenDialog>
+  </div>
 )
 
 const selector = formValueSelector('variation');
@@ -172,11 +166,11 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...stateProps,
     ...dispatchProps,
     handleClose: (variation) => {
-      ownProps.onRequestClose();
+      ownProps.history.goBack();
       dispatchProps.resetForm();
     },
     onSubmit: (variation) => {
-      ownProps.onRequestClose();
+      ownProps.history.goBack();
       dispatchProps.addVariation(variation);
       dispatchProps.resetForm();
     }

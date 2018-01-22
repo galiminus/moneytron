@@ -10,6 +10,8 @@ import "moment/locale/fr";
 import Main from './components/main';
 import { Provider } from 'react-redux';
 import { updateConfiguration } from './actions/configuration';
+import { setCurrentDate } from "./actions/currentDate";
+
 import { ConnectedRouter } from 'react-router-redux'
 
 import store from "./store";
@@ -45,4 +47,6 @@ document.addEventListener("DOMContentLoaded", e => {
   ReactDOM.render(
     <App />, document.body.appendChild(document.createElement('div'))
   );
+
+  setInterval(() => (store.dispatch(setCurrentDate(new Date()))), 60 * 1000);
 })

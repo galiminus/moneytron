@@ -20,12 +20,13 @@ const required = value => (value ? undefined : 'This field is required.')
 
 const GroupByCategoryToggle = ({ input: { onChange, value, ...inputProps }, label, locale, meta: { touched, error }, ...custom }) => (
   <Checkbox
+    labelPosition="left"
     label={label}
     {...custom}
     checked={value ? true : false}
     onCheck={(event, isInputChecked) => onChange(isInputChecked)}
     style={{
-      marginTop: 24
+      marginTop: 32
     }}
   />
 )

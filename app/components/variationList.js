@@ -118,7 +118,7 @@ const computeGroupedVariations = (preparedVariations, range) => (
     return (variation);
   })
 )
-computeGroupedVariations
+
 const variationItems = (props, variations) => (
   variations.map((variation, index) => {
     const isSelected = props.selectedVariations.includes(variation.children[0]);
@@ -137,7 +137,7 @@ const variationItems = (props, variations) => (
                 fontWeight: "bold"
               }}
             >
-              {variation.label}
+              {variation.label || translations[props.locale].noLabel}
             </p>
           }
           leftIcon={variation.direction === "spending" || variation.direction === "project" ? <ArrowDropDownIcon color={red900} /> : <ArrowDropUpIcon color={green900} />}

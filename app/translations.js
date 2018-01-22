@@ -31,6 +31,7 @@ export default {
     everyMonth: "every month",
     untilDate: "until END_DATE",
     estimate: "Estimates",
+    noLabel: "Other",
     shortRange: {
       "day": "d."
     },
@@ -70,6 +71,7 @@ export default {
     everyMonth: "tout les mois",
     untilDate: "jusqu'au END_DATE",
     estimate: "Estimations",
+    noLabel: "Autre",
     shortRange: {
       "day": "j."
     },

@@ -43,7 +43,11 @@ export default {
       "oneTime": "One-time",
       "recurring": "Recurring",
       "project": "Projects"
-    }
+    },
+    graphTitles: {
+      days: "Last DAYS days"
+    },
+    changeDate: "Change the date"
   },
   "fr-FR": {
     welcomeText: "MoneyTron calcule automatiquement votre budget quotidien pour vous aider à maîtriser vos dépenses.",
@@ -88,7 +92,10 @@ export default {
       "oneTime": "Une seule fois",
       "recurring": "Tout les mois",
       "project": "Projets"
-    }
-
+    },
+    graphTitles: {
+      days: "Derniers DAYS jours"
+    },
+    changeDate: "Changer la date"
   }
 }

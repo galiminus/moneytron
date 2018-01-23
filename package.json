@@ -31,6 +31,7 @@
     "react-router-dom": "^4.2.2",
     "react-router-page-transition": "^3.0.2",
     "react-router-redux": "^5.0.0-alpha.9",
+    "recharts": "^1.0.0-beta.9",
     "redux": "^3.7.2",
     "redux-form": "^7.1.1",
     "redux-localstorage": "^0.4.1",

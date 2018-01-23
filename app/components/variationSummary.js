@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import {List, ListItem} from 'material-ui/List';
-import { FlatButton } from 'material-ui/FlatButton';
+import { List, ListItem } from 'material-ui/List';
+import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
 import DatePicker from 'material-ui/DatePicker';
 import moment from 'moment';
@@ -9,8 +9,9 @@ import { deepPurple900 } from 'material-ui/styles/colors';
 
 import { connect } from 'react-redux';
 
+import VariationHistoryChart from "./variationHistoryChart";
 import { setCurrentDate } from "../actions/currentDate";
-import { removeOutdatedVariations, computeDailyAmount, computeCurrentRangeAmount, computeTotalRangeAmount } from "../utils/variations";
+import { computeTotalRangeAmount } from "../utils/variations";
 import translations from "../translations";
 
 class VariationSummary extends React.Component {
@@ -29,34 +30,59 @@ class VariationSummary extends React.Component {
         <List style={{ padding: 0 }}>
           <ListItem
             style={{ padding: "8px 0" }}
-            onClick={() => this.setState({ datePickerOpen: true })}
+            primaryTogglesNestedList={true}
+            nestedItems={
+              [
+                <VariationHistoryChart key={"30"} days={30} />,
+                <VariationHistoryChart key={"90"} days={90} />,
+                <ListItem
+                  key={"changeDate"}
+                  onClick={() => this.setState({ datePickerOpen: true })}
+                  style={{
+                    marginTop: 16
+                  }}
+                  innerDivStyle={{
+                    textAlign: "right",
+                    paddingBottom: 0
+                  }}
+                  primaryText={
+                    <FlatButton label={translations[this.props.locale].changeDate} primary={true}  />
+                  }
+                />
+              ]
+            }
             primaryText={
-              <div>
+              <div
+                style={{
+                  height: 16
+                }}
+              >
                 <div
                   style={{
-                    color: "rgba(0, 0, 0, 0.74)",
+                    fontWeight: "bold",
+                    position: "absolute",
+                    right: 48,
                     display: "inline-block",
-                    fontWeight: "bold"
+                    color: "rgba(0, 0, 0, 0.74)",
+                    top: 17
                   }}
                 >
                   {moment(this.props.currentDate).locale(this.props.locale).format("LL")}
                 </div>
-
                 <div
                   style={{
-                    fontWeight: "bold",
                     textTransform: "lowercase",
                     background: deepPurple900,
                     padding: 6,
                     borderRadius: 3,
+                    fontWeight: "bold",
                     color: "white",
                     display: "inline-block",
                     position: "absolute",
-                    right: 16,
                     top: 10
                   }}
                 >
-                {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(dailyAmount))} / ${translations[this.props.locale].shortRange[this.props.range]}`}
+                  {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(dailyAmount))} / ${translations[this.props.locale].shortRange[this.props.range]}`}
                 </div>
               </div>
             }

@@ -86,21 +86,6 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
 
 export function sortVariations(variations) {
   return (variations.sort((variation1, variation2) => {
-    if (variation2.direction === "project") {
-      return (-1);
-    }
-    if (variation1.direction === "earning" && variation1.frequency === "recurring") {
-      return (1);
-    }
-    if (variation2.direction === "earning" && variation2.frequency === "recurring") {
-      return (-1);
-    }
-    if (variation1.frequency === "one-time" && variation2.frequency === "recurring") {
-      return (-1);
-    }
-    if (variation1.frequency === "recurring" && variation2.frequency === "one-time") {
-      return (1);
-    }
     return (variation1.date < variation2.date);
   }));
 }

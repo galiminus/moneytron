@@ -9,7 +9,7 @@ import translations from "../translations";
 
 const dataFromVariations = (props) => (
   Array.from(Array(props.days).keys()).map((day) => (
-    { amount: computeTotalRangeAmount(props.variations, moment(props.currentDate).subtract(props.days - day - 1, 'days'), 'day') }
+    { amount: computeTotalRangeAmount(props.variations, moment(props.currentDate).subtract(props.days - day - 1, 'days').toDate(), 'day') }
   ))
 )
 

@@ -1,4 +1,7 @@
 import moment from "moment";
+import store from "../store";
+
+import { cacheTotalRangeAmount, getTotalRangeAmount } from "./totalRangeAmountsCache";
 
 export function filterVariations(variations, date, range) {
   return (variations.reduce((filteredVariations, variation) => {
@@ -45,6 +48,9 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
   if (variations.length === 0) {
     return (0);
   }
+  if (getTotalRangeAmount(range, currentDate)) {
+    return (getTotalRangeAmount(range, currentDate))
+  }
 
   const computeRecurringAmountAt = (variations, date) => {
     let daysInMonth = moment(date).daysInMonth();
@@ -79,6 +85,8 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
   for (let n = 0; n < end.diff(start, 'days') + 1; n++) {
     let currentDay = start.clone().add(n, 'days');
     totalAmount = computeRecurringAmountAt(variations, currentDay) + totalAmount + totalAmount / (endOfMonth.diff(currentDay, 'days') + 1);
+
+    cacheTotalRangeAmount(range, currentDay.toDate(), totalAmount);
   }
 
   return (totalAmount > 0 ? totalAmount : 0)

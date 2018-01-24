@@ -103,6 +103,7 @@ const computeGroupedVariations = (variations, range) => (
       amount: variations.reduce((totalAmount, variation) => (totalAmount + Number(variation.amount)), 0),
       dailyAmount: variations.reduce((totalAmount, variation) => (totalAmount + computeAmount(variation, range)), 0),
       end: variations.map((variation) => variation.end).sort().reverse()[0],
+      date: variations.map((variation) => variation.date).sort().reverse()[0],
       uuid: key,
       children: variations.map((variation) => variation.uuid)
     }
@@ -111,13 +112,13 @@ const computeGroupedVariations = (variations, range) => (
 )
 
 const variationItems = (props, variations) => (
-  variations.map((variation, index) => {
+  sortVariations(variations).map((variation, index) => {
     const isSelected = props.selectedVariations.includes(variation.children[0]);
 
     return (
       <div key={index}>
         <ListItem
-          style={isSelected ? { background: grey300 } : {}}
+          style={isSelected ? { background: grey300 } : {} }
           onClick={() => isSelected ? props.setSelectedVariations([]) : props.setSelectedVariations(variation.children)}
           primaryText={<VariationItemAmount variation={variation} locale={props.locale} range={props.range} currency={props.currency} />}
           secondaryText={
@@ -160,7 +161,7 @@ const VariationList = (props) => {
       >
         <List>
         {
-          Object.entries(groupVariationsByTypeAndFrequency(sortVariations(filterVariations(props.variations, props.currentDate, 'month')))).map(([groupingName, variations]) => (
+          Object.entries(groupVariationsByTypeAndFrequency(filterVariations(props.variations, props.currentDate, 'month'))).map(([groupingName, variations]) => (
             <div
               key={groupingName}
             >

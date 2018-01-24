@@ -102,8 +102,8 @@ const computeGroupedVariations = (variations, range) => (
       frequency: variations[0].frequency,
       amount: variations.reduce((totalAmount, variation) => (totalAmount + Number(variation.amount)), 0),
       dailyAmount: variations.reduce((totalAmount, variation) => (totalAmount + computeAmount(variation, range)), 0),
-      end: variations.map((variation) => variation.end).sort().reverse()[0],
-      date: variations.map((variation) => variation.date).sort().reverse()[0],
+      end: variations.map((variation) => new Date(variation.end).getTime()).sort().reverse()[0],
+      date: variations.map((variation) => new Date(variation.date).getTime()).sort().reverse()[0],
       uuid: key,
       children: variations.map((variation) => variation.uuid)
     }

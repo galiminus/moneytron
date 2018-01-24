@@ -71,7 +71,7 @@ export default {
     earning: "Gain",
     project: "Projet",
     end: "Échéance",
-    frequency: "Fréquence",
+    frequency: "Périodicité",
     oneTime: "Une seule fois",
     groupByCategory: "Regrouper par catégorie",
     recurring: "Tout les mois",

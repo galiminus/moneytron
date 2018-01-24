@@ -100,8 +100,16 @@ const computeGroupedVariations = (variations, range) => (
       label: variations[0].label,
       direction: variations[0].direction,
       frequency: variations[0].frequency,
-      amount: variations.reduce((totalAmount, variation) => (totalAmount + Number(variation.amount)), 0),
-      dailyAmount: variations.reduce((totalAmount, variation) => (totalAmount + computeAmount(variation, range)), 0),
+      amount: variations.reduce((totalAmount, variation) => {
+        let variationAmount = Number(variation.amount);
+        if (variation.direction === "spending" || variation.direction === "project") {
+          variationAmount = -variationAmount;
+        }
+        return (totalAmount + variationAmount);
+      }, 0),
+      dailyAmount: variations.reduce((totalAmount, variation) => {
+        return (totalAmount + computeAmount(variation, range));
+      }, 0),
       end: variations.map((variation) => new Date(variation.end).getTime()).sort().reverse()[0],
       date: variations.map((variation) => new Date(variation.date).getTime()).sort().reverse()[0],
       uuid: key,
@@ -155,7 +163,7 @@ const VariationList = (props) => {
       <div
         style={{
           paddingTop: 120,
-          paddingBottom: 92,
+          paddingBottom: 48,
           zIndex: 0
         }}
       >

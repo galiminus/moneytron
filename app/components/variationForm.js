@@ -167,12 +167,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     ...dispatchProps,
     handleClose: (variation) => {
       ownProps.history.goBack();
-      dispatchProps.resetForm();
     },
     onSubmit: (variation) => {
       ownProps.history.goBack();
       dispatchProps.addVariation(variation);
-      dispatchProps.resetForm();
     }
   }
 }

@@ -93,9 +93,9 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
 }
 
 export function sortVariations(variations) {
-  return (variations.sort((variation1, variation2) => {
-    return (new Date(variation1.date).getTime() < new Date(variation2.date).getTime());
-  }));
+  return (variations.sort((variation1, variation2) => (
+    new Date(variation2.date).getTime() - new Date(variation1.date).getTime()
+  )));
 }
 
 export function groupVariationsByTypeAndFrequency(variations) {

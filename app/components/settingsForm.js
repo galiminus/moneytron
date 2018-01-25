@@ -17,6 +17,7 @@ import { Field, reduxForm } from 'redux-form';
 import { updateConfiguration } from '../actions/configuration';
 import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import ResponsiveSelect from "./responsiveSelect";
+import ResponsiveContainer from './responsiveContainer';
 import translations from "../translations";
 
 const required = value => (value ? undefined : 'This field is required.')
@@ -43,30 +44,37 @@ const SettingsForm = (props) => (
       iconElementRight={<IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton>}
     />
     <div style={{ padding: "0 1em", paddingTop: 64 }}>
-      <ResponsiveSelect
-        name="currency"
-        validate={[required]}
-        label={translations[props.locale].currency}
-        collection={
-          Object.keys(currencyToSymbolMap).reduce((collection, currency) => (
-            { ...collection, [currency]: currency }
-          ), {})
-        }
-      />
-      <ResponsiveSelect
-        name="locale"
-        validate={[required]}
-        label={translations[props.locale].language}
-        collection={
-          Object.keys(translations).reduce((collection, locale) => (
-            { ...collection, [locale]: translations[locale].name }
-          ), {})}
-      />
-      <Field
-        name="groupByCategory"
-        component={GroupByCategoryToggle}
-        label={translations[props.locale].groupByCategory}
-      />
+      <ResponsiveContainer
+        paperStyle={{
+          padding: "2em",
+          height: "calc(100vh - 64px - 2em)"
+        }}
+      >
+        <ResponsiveSelect
+          name="currency"
+          validate={[required]}
+          label={translations[props.locale].currency}
+          collection={
+            Object.keys(currencyToSymbolMap).reduce((collection, currency) => (
+              { ...collection, [currency]: currency }
+            ), {})
+          }
+        />
+        <ResponsiveSelect
+          name="locale"
+          validate={[required]}
+          label={translations[props.locale].language}
+          collection={
+            Object.keys(translations).reduce((collection, locale) => (
+              { ...collection, [locale]: translations[locale].name }
+            ), {})}
+        />
+        <Field
+          name="groupByCategory"
+          component={GroupByCategoryToggle}
+          label={translations[props.locale].groupByCategory}
+        />
+      </ResponsiveContainer>
     </div>
   </div>
 )

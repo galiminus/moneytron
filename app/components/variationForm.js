@@ -12,6 +12,7 @@ import { Field, reduxForm, formValueSelector, reset } from 'redux-form';
 import { addVariation } from '../actions/variations';
 import AppBar from "./appbar";
 import ResponsiveSelect from "./responsiveSelect";
+import ResponsiveContainer from './responsiveContainer';
 import translations from "../translations";
 
 const required = value => (value ? undefined : 'This field is required.')
@@ -79,58 +80,65 @@ const VariationForm = (props) => (
       iconElementRight={props.valid ? <IconButton onClick={props.handleSubmit}><DoneIcon /></IconButton> : undefined}
     />
     <div style={{ padding: "0 1em", paddingTop: 64 }}>
-      <Field
-        name="amount"
-        component={AmountField}
-        type="number"
-        validate={[required]}
-        label={translations[props.locale].amount}
-        autoFocus
-      />
-      <ResponsiveSelect
-        name="direction"
-        validate={[required]}
-        label={translations[props.locale].direction}
-        collection={
-          {
-            "spending": translations[props.locale].spending,
-            "earning": translations[props.locale].earning,
-            "project": translations[props.locale].project
-          }
-        }
-      />
-      <Field
-        name="label"
-        component={LabelField}
-        type="text"
-        label={translations[props.locale].label}
-        dataSource={labelDataSource(props.variations, props.direction)}
-      />
-      {
-        (props.direction === 'earning' || props.direction === 'spending') &&
-          <ResponsiveSelect
-            name="frequency"
-            validate={[required]}
-            label={translations[props.locale].end}
-            collection={
-              {
-                "one-time": translations[props.locale].oneTime,
-                "recurring": translations[props.locale].recurring
-              }
+      <ResponsiveContainer
+        paperStyle={{
+          padding: "2em",
+          height: "calc(100vh - 64px - 2em)"
+        }}
+      >
+        <Field
+          name="amount"
+          component={AmountField}
+          type="number"
+          validate={[required]}
+          label={translations[props.locale].amount}
+          autoFocus
+        />
+        <ResponsiveSelect
+          name="direction"
+          validate={[required]}
+          label={translations[props.locale].direction}
+          collection={
+            {
+              "spending": translations[props.locale].spending,
+              "earning": translations[props.locale].earning,
+              "project": translations[props.locale].project
             }
-          />
-      }
-      {
-        props.direction === 'project' &&
-          <Field
-            name="end"
-            component={EndField}
-            type="text"
-            validate={[required]}
-            label={translations[props.locale].end}
-            locale={props.locale}
-          />
-      }
+          }
+        />
+        <Field
+          name="label"
+          component={LabelField}
+          type="text"
+          label={translations[props.locale].label}
+          dataSource={labelDataSource(props.variations, props.direction)}
+        />
+        {
+          (props.direction === 'earning' || props.direction === 'spending') &&
+            <ResponsiveSelect
+              name="frequency"
+              validate={[required]}
+              label={translations[props.locale].end}
+              collection={
+                {
+                  "one-time": translations[props.locale].oneTime,
+                  "recurring": translations[props.locale].recurring
+                }
+              }
+            />
+        }
+        {
+          props.direction === 'project' &&
+            <Field
+              name="end"
+              component={EndField}
+              type="text"
+              validate={[required]}
+              label={translations[props.locale].end}
+              locale={props.locale}
+            />
+        }
+      </ResponsiveContainer>
     </div>
   </div>
 )

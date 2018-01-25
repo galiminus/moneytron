@@ -30,6 +30,7 @@ import { openVariationForm, closeVariationForm } from "../actions/variationForm"
 import { spreadToText } from "../utils/dates";
 import { computeAmount } from "../utils/variations";
 import VariationForm from './variationForm';
+import ResponsiveContainer from './responsiveContainer';
 
 const targetDateText = (props) => {
   if (props.variation.direction === "project") {
@@ -164,32 +165,38 @@ const VariationList = (props) => {
           zIndex: 0
         }}
       >
-        <List>
-        {
-          Object.entries(groupVariationsByTypeAndFrequency(filterVariations(props.variations, props.currentDate, 'month'))).map(([groupingName, variations]) => (
-            <div
-              key={groupingName}
-            >
-              {
-                variations.length > 0 &&
-                  <Subheader
-                    style={{
-                      fontFamily: "Roboto, sans-serif",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    {translations[props.locale].groupingNames[groupingName]}
-                  </Subheader>
-              }
-              {
-                props.groupByCategory ?
-                  variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range)) :
-                  variationItems(props, computeGroupedVariations(variations.map((variation) => [variation.uuid, [variation]]), props.range))
-              }
-            </div>
-          ))
-        }
-        </List>
+        <ResponsiveContainer
+          paperStyle={{
+            height: "calc(100vh - 184px)"
+          }}
+        >
+          <List>
+          {
+            Object.entries(groupVariationsByTypeAndFrequency(filterVariations(props.variations, props.currentDate, 'month'))).map(([groupingName, variations]) => (
+              <div
+                key={groupingName}
+              >
+                {
+                  variations.length > 0 &&
+                    <Subheader
+                      style={{
+                        fontFamily: "Roboto, sans-serif",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      {translations[props.locale].groupingNames[groupingName]}
+                    </Subheader>
+                }
+                {
+                  props.groupByCategory ?
+                    variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range)) :
+                    variationItems(props, computeGroupedVariations(variations.map((variation) => [variation.uuid, [variation]]), props.range))
+                }
+              </div>
+            ))
+          }
+          </List>
+        </ResponsiveContainer>
         <AddVariationButton containerElement={<Link to="/new" />} />
       </div>
       { props.formOpen && <VariationForm onRequestClose={props.closeVariationForm} /> }

@@ -21,14 +21,11 @@ export default {
     spending: "Spending",
     earning: "Earning",
     project: "Project",
-    end: "Target date",
-    frequency: "Frequency",
-    oneTime: "One-time",
+    end: "Term",
+    oneTime: "Until the end of the month",
     groupByCategory: "Group by category",
     recurring: "Recurring every month",
     date: "Date",
-    untilEndOfTheMonth: "until the end of the month",
-    everyMonth: "every month",
     untilDate: "until END_DATE",
     estimate: "Estimates",
     noLabel: "Other",
@@ -40,8 +37,8 @@ export default {
       oneTimeOnly: "One-time only"
     },
     groupingNames: {
-      "oneTime": "One-time",
-      "recurring": "Recurring",
+      "oneTime": "Until the end of the month",
+      "recurring": "Every month",
       "project": "Projects"
     },
     graphTitles: {
@@ -71,13 +68,10 @@ export default {
     earning: "Gain",
     project: "Projet",
     end: "Échéance",
-    frequency: "Périodicité",
-    oneTime: "Une seule fois",
+    oneTime: "Jusqu'à la fin du mois",
     groupByCategory: "Regrouper par catégorie",
     recurring: "Tout les mois",
     date: "Date",
-    untilEndOfTheMonth: "jusqu'à la fin du mois",
-    everyMonth: "tout les mois",
     untilDate: "jusqu'au END_DATE",
     estimate: "Estimations",
     noLabel: "Autre",
@@ -89,7 +83,7 @@ export default {
       oneTimeOnly: "Ponctuel seulement"
     },
     groupingNames: {
-      "oneTime": "Une seule fois",
+      "oneTime": "Jusqu'à la fin du mois",
       "recurring": "Tout les mois",
       "project": "Projets"
     },

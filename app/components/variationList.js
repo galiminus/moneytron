@@ -35,12 +35,6 @@ const targetDateText = (props) => {
   if (props.variation.direction === "project") {
     return (translations[props.locale].untilDate.replace("END_DATE", moment(props.variation.end).locale(props.locale).format("LL")));
   }
-  if (props.variation.frequency === "one-time") {
-    return (translations[props.locale].untilEndOfTheMonth);
-  }
-  if (props.variation.frequency === "recurring") {
-    return (translations[props.locale].everyMonth);
-  }
 }
 
 const VariationItemAmount = (props) => {
@@ -60,7 +54,10 @@ const VariationItemAmount = (props) => {
           {`${new Intl.NumberFormat(props.locale, { style: 'currency', currency: props.currency }).format(props.variation.dailyAmount)} / ${translations[props.locale].shortRange[props.range]}`}
         </div>
         <div>
-          {targetDateText(props)}
+          {
+            props.variation.direction === "project" &&
+              translations[props.locale].untilDate.replace("END_DATE", moment(props.variation.end).locale(props.locale).format("LL"))
+          }
         </div>
       </div>
     </span>

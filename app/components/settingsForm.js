@@ -5,8 +5,8 @@ import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import LanguageIcon from 'material-ui/svg-icons/action/language';
 import Toggle from 'material-ui/Toggle';
 import Checkbox from 'material-ui/Checkbox';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+
+import Divider from 'material-ui/Divider';
 
 import currencyToSymbolMap from 'currency-symbol-map/map';
 

@@ -3,7 +3,6 @@ import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
-import DatePicker from 'material-ui/DatePicker';
 import moment from 'moment';
 import { deepPurple900 } from 'material-ui/styles/colors';
 
@@ -15,11 +14,6 @@ import { computeTotalRangeAmount } from "../utils/variations";
 import translations from "../translations";
 
 class VariationSummary extends React.Component {
-  componentDidUpdate() {
-    if (this.state && this.state.datePickerOpen)
-      this.refs.datePicker.openDialog();
-  }
-
   render() {
     const dailyAmount = computeTotalRangeAmount(this.props.variations, this.props.currentDate, 'day');
 
@@ -45,9 +39,6 @@ class VariationSummary extends React.Component {
                     textAlign: "right",
                     paddingBottom: 0
                   }}
-                  primaryText={
-                    <FlatButton label={translations[this.props.locale].changeDate} primary={true}  />
-                  }
                 />
               ]
             }
@@ -88,24 +79,6 @@ class VariationSummary extends React.Component {
             }
           />
         </List>
-        <DatePicker
-          id="datePicker"
-          ref="datePicker"
-          style={{
-            display: "none"
-          }}
-          autoOk={true}
-          hideCalendarDate={true}
-          onChange={(_, value) => {
-            this.props.setCurrentDate(value);
-            this.setState({ datePickerOpen: false });
-          }}
-          value={this.props.currentDate}
-          onDismiss={() => this.setState({ datePickerOpen: false })}
-          DateTimeFormat={Intl.DateTimeFormat}
-          locale={this.props.locale}
-          cancelLabel={translations[this.props.locale].cancel}
-        />
       </Paper>
     );
   }

@@ -111,7 +111,7 @@ const VariationForm = (props) => (
           <ResponsiveSelect
             name="frequency"
             validate={[required]}
-            label={translations[props.locale].frequency}
+            label={translations[props.locale].end}
             collection={
               {
                 "one-time": translations[props.locale].oneTime,

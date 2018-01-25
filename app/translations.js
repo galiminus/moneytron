@@ -70,7 +70,7 @@ export default {
     end: "Échéance",
     oneTime: "Jusqu'à la fin du mois",
     groupByCategory: "Regrouper par catégorie",
-    recurring: "Tout les mois",
+    recurring: "Tous les mois",
     date: "Date",
     untilDate: "jusqu'au END_DATE",
     estimate: "Estimations",
@@ -84,7 +84,7 @@ export default {
     },
     groupingNames: {
       "oneTime": "Jusqu'à la fin du mois",
-      "recurring": "Tout les mois",
+      "recurring": "Tous les mois",
       "project": "Projets"
     },
     graphTitles: {

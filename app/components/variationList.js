@@ -92,7 +92,7 @@ const SettingsButton = (props) => (
   </IconButton>
 )
 
-const computeGroupedVariations = (variations, range) => (
+const computeGroupedVariations = (variations, range, currentDate) => (
   variations.map(([key, variations]) => {
     const variation = {
       label: variations[0].label,
@@ -106,7 +106,7 @@ const computeGroupedVariations = (variations, range) => (
         return (totalAmount + variationAmount);
       }, 0),
       dailyAmount: variations.reduce((totalAmount, variation) => {
-        return (totalAmount + computeAmount(variation, range));
+        return (totalAmount + computeAmount(variation, range, currentDate));
       }, 0),
       end: variations.map((variation) => new Date(variation.end).getTime()).sort().reverse()[0],
       date: variations.map((variation) => new Date(variation.date).getTime()).sort().reverse()[0],
@@ -147,6 +147,8 @@ const variationItems = (props, variations) => (
 );
 
 const VariationList = (props) => {
+  const filteredVariations = filterVariations(props.variations, props.currentDate, 'month');
+  const groupedVariations = groupVariationsByTypeAndFrequency(filteredVariations);
   return (
     <div>
       <AppBar
@@ -172,7 +174,7 @@ const VariationList = (props) => {
         >
           <List>
           {
-            Object.entries(groupVariationsByTypeAndFrequency(filterVariations(props.variations, props.currentDate, 'month'))).map(([groupingName, variations]) => (
+            Object.entries(groupedVariations).map(([groupingName, variations]) => (
               <div
                 key={groupingName}
               >
@@ -189,8 +191,8 @@ const VariationList = (props) => {
                 }
                 {
                   props.groupByCategory ?
-                    variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range)) :
-                    variationItems(props, computeGroupedVariations(variations.map((variation) => [variation.uuid, [variation]]), props.range))
+                    variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range, props.currentDate)) :
+                    variationItems(props, computeGroupedVariations(variations.map((variation) => [variation.uuid, [variation]]), props.range, props.currentDate))
                 }
               </div>
             ))
@@ -212,6 +214,7 @@ function mapStateToProps(state, props) {
     locale: state.configuration.locale,
     currency: state.configuration.currency,
     groupByCategory: state.configuration.groupByCategory,
+    currentMonthOnly: state.configuration.currentMonthOnly,
     currentDate: state.currentDate,
     formOpen: state.variationForm,
     currentFilter: state.currentFilter

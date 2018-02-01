@@ -3,7 +3,6 @@ import IconButton from 'material-ui/IconButton';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 import BackIcon from 'material-ui/svg-icons/navigation/arrow-back';
 import LanguageIcon from 'material-ui/svg-icons/action/language';
-import Toggle from 'material-ui/Toggle';
 import Checkbox from 'material-ui/Checkbox';
 
 import Divider from 'material-ui/Divider';
@@ -22,7 +21,7 @@ import translations from "../translations";
 
 const required = value => (value ? undefined : 'This field is required.')
 
-const GroupByCategoryToggle = ({ input: { onChange, value, ...inputProps }, label, locale, meta: { touched, error }, ...custom }) => (
+const Toggle = ({ input: { onChange, value, ...inputProps }, label, locale, meta: { touched, error }, ...custom }) => (
   <Checkbox
     labelPosition="left"
     label={label}
@@ -71,7 +70,7 @@ const SettingsForm = (props) => (
         />
         <Field
           name="groupByCategory"
-          component={GroupByCategoryToggle}
+          component={Toggle}
           label={translations[props.locale].groupByCategory}
         />
       </ResponsiveContainer>

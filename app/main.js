@@ -48,5 +48,6 @@ document.addEventListener("DOMContentLoaded", e => {
     <App />, document.body.appendChild(document.createElement('div'))
   );
 
+  store.dispatch(setCurrentDate(new Date()));
   setInterval(() => (store.dispatch(setCurrentDate(new Date()))), 60 * 1000);
 })

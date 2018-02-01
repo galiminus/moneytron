@@ -21,7 +21,7 @@ export function filterVariations(variations, date, range) {
   }, []))
 }
 
-export function computeAmount(variation, range) {
+export function computeAmount(variation, range, currentDate) {
   let amount = Number(variation.amount);
   let daysInMonth = moment(variation.date).daysInMonth();
   let endOfMonth = moment(moment(variation.date).endOf('month'));
@@ -77,7 +77,8 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
     return (initialAmount);
   }
 
-  const start = moment(variations.sort((variation1, variation2) => ( variation1.date - variation2.date))[0].date).startOf('month');
+  // const start = moment(variations.sort((variation1, variation2) => ( variation1.date - variation2.date))[0].date).startOf('month');
+  const start = moment(currentDate).startOf('month');
   const endOfMonth = moment(currentDate).endOf("month");
   const end = { "day": moment(currentDate), "month": moment(currentDate).endOf("month") }[range];
 

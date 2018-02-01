@@ -4,7 +4,7 @@ import { List, ListItem } from 'material-ui/List';
 import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
 import moment from 'moment';
-import { deepPurple900 } from 'material-ui/styles/colors';
+import { deepPurple900, red900 } from 'material-ui/styles/colors';
 
 import { connect } from 'react-redux';
 
@@ -63,7 +63,7 @@ class VariationSummary extends React.Component {
                 <div
                   style={{
                     textTransform: "lowercase",
-                    background: deepPurple900,
+                    background: (dailyAmount > 0 ? deepPurple900 : red900),
                     padding: 6,
                     borderRadius: 3,
                     fontWeight: "bold",
@@ -73,7 +73,7 @@ class VariationSummary extends React.Component {
                     top: 10
                   }}
                 >
-                  {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(dailyAmount))} / ${translations[this.props.locale].shortRange[this.props.range]}`}
+                  {`${new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(dailyAmount)} / ${translations[this.props.locale].shortRange[this.props.range]}`}
                 </div>
               </div>
             }

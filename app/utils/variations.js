@@ -89,7 +89,7 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
     cacheTotalRangeAmount(range, currentDay.toDate(), totalAmount);
   }
 
-  return (totalAmount > 0 ? totalAmount : 0)
+  return (totalAmount)
 }
 
 export function sortVariations(variations) {

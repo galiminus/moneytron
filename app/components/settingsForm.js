@@ -6,6 +6,8 @@ import LanguageIcon from 'material-ui/svg-icons/action/language';
 import Checkbox from 'material-ui/Checkbox';
 
 import Divider from 'material-ui/Divider';
+import RaisedButton from 'material-ui/RaisedButton';
+import { red900 } from 'material-ui/styles/colors';
 
 import currencyToSymbolMap from 'currency-symbol-map/map';
 
@@ -14,6 +16,7 @@ import AppBar from "./appbar";
 import { connect, dispatch } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { updateConfiguration } from '../actions/configuration';
+import { resetVariations } from '../actions/variations';
 import { defaultMonthsSelection, numberOfMonthsToText } from "../utils/dates";
 import ResponsiveSelect from "./responsiveSelect";
 import ResponsiveContainer from './responsiveContainer';
@@ -73,6 +76,21 @@ const SettingsForm = (props) => (
           component={Toggle}
           label={translations[props.locale].groupByCategory}
         />
+        <Divider
+          style={{
+            marginTop: "2em"
+          }}
+        />
+        <RaisedButton
+          style={{
+            marginTop: "2em"
+          }}
+          fullWidth={true}
+          backgroundColor={red900}
+          labelColor="white"
+          label={translations[props.locale].resetAll}
+          onClick={props.resetVariations}
+        />
       </ResponsiveContainer>
     </div>
   </div>
@@ -90,8 +108,25 @@ const mapDispatchToProps = (dispatch, props) => {
     onSubmit: (values) => {
       props.history.goBack();
       dispatch(updateConfiguration(values));
+    },
+    resetVariations: () => {
+      dispatch(resetVariations());
+      props.history.goBack();
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: "settings" })(SettingsForm));
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return {
+    ...ownProps,
+    ...stateProps,
+    ...dispatchProps,
+    resetVariations: () => {
+      if (confirm(translations[stateProps.locale].confirmReset)) {
+        dispatchProps.resetVariations();
+      }
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(reduxForm({ form: "settings" })(SettingsForm));

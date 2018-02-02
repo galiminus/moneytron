@@ -9,3 +9,7 @@ export function removeVariation(payload) {
 export function setSelectedVariations(payload) {
   return { type: "SET_SELECTED_VARIATIONS", payload };
 }
+
+export function resetVariations() {
+  return { type: "RESET_VARIATIONS" };
+}

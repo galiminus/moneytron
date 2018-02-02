@@ -13,7 +13,7 @@ const historyMiddleware = routerMiddleware(history);
 const enhancer = compose(
   applyMiddleware(logger),
   applyMiddleware(historyMiddleware),
-  persistState(['variations', 'configuration', 'router'], {
+  persistState(['variations', 'configuration', 'router', 'summaryDisplay'], {
     deserialize: (json) => {
       let { variations, currentDate, ...other } = JSON.parse(json);
 

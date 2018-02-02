@@ -3,6 +3,7 @@ import variations from "./reducers/variations";
 import selectedVariations from "./reducers/selectedVariations";
 import variationForm from "./reducers/variationForm";
 import currentDate from "./reducers/currentDate";
+import summaryDisplay from "./reducers/summaryDisplay";
 
 import { routerReducer } from 'react-router-redux';
 
@@ -15,6 +16,7 @@ export default combineReducers({
   variations,
   currentDate,
   selectedVariations,
+  summaryDisplay,
   form: formReducer,
   router: routerReducer
 })

@@ -4,14 +4,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { deepPurple900 } from 'material-ui/styles/colors';
 
-import "moment";
+import moment from "moment";
 import "moment/locale/fr";
 
 import Main from './components/main';
 import { Provider } from 'react-redux';
 import { updateConfiguration } from './actions/configuration';
 import { setCurrentDate } from "./actions/currentDate";
-
+import { computeTotalRangeAmount } from './utils/variations';
 import { ConnectedRouter } from 'react-router-redux'
 
 import store from "./store";
@@ -50,4 +50,10 @@ document.addEventListener("DOMContentLoaded", e => {
 
   store.dispatch(setCurrentDate(new Date()));
   setInterval(() => (store.dispatch(setCurrentDate(new Date()))), 60 * 1000);
+
+  // fill up the cache
+  const days = 30;
+  Array.from(Array(days).keys()).forEach((day) => (
+    computeTotalRangeAmount(store.getState().variations, moment(store.getState().currentDate).subtract(days - day - 1, 'days').toDate(), 'day')
+  ));
 })

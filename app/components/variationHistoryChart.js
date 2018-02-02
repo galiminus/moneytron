@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { deepPurple900 } from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
-import { LineChart, Line, ResponsiveContainer, Tooltip } from 'recharts';
+import { LineChart, Line, ResponsiveContainer, Tooltip, YAxis, CartesianGrid } from 'recharts';
 import { computeTotalRangeAmount } from "../utils/variations";
 import moment from "moment";
 import translations from "../translations";
 
 const dataFromVariations = (props) => (
   Array.from(Array(props.days).keys()).map((day) => (
-    { amount: computeTotalRangeAmount(props.variations, moment(props.currentDate).subtract(props.days - day - 1, 'days').toDate(), 'day') }
+    { amount: props.computer(props.variations, moment(props.currentDate).subtract(props.days - day - 1, 'days').toDate(), 'day') }
   ))
 )
 
@@ -25,15 +25,24 @@ const VariationHistoryChart = (props) => (
     </Subheader>
     <ResponsiveContainer height={100}>
       <LineChart
+        style={{
+          fontSize: 10
+        }}
         height={100}
         data={dataFromVariations(props)}
         margin={{
           top: 0,
-          right: 32,
-          left: 32,
+          right: 20,
+          left: -20,
           bottom: 10
         }}
       >
+        <CartesianGrid strokeDasharray="3 3"/>
+
+        <YAxis
+          padding={{
+          }}
+        />
         <Line type="monotone" dataKey="amount" stroke={deepPurple900} dot={false} />
       </LineChart>
     </ResponsiveContainer>

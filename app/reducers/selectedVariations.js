@@ -6,6 +6,8 @@ export default function (state = [], action) {
       if (action.payload === state) {
         return [];
       }
+    case "RESET_VARIATIONS":
+      return [];
     case "@@router/LOCATION_CHANGE":
       return [];
     default:

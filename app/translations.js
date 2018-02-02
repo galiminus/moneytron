@@ -25,11 +25,14 @@ export default {
     oneTime: "Until the end of the month",
     groupByCategory: "Group by category",
     currentMonthOnly: "Only show current month",
+    resetAll: "Clear everything",
+    confirmReset: "Are you sure you want to reset all data?",
     recurring: "Recurring every month",
     date: "Date",
     untilDate: "until END_DATE",
     estimate: "Estimates",
     noLabel: "Other",
+    today: "Today",
     shortRange: {
       "day": "d."
     },
@@ -72,11 +75,14 @@ export default {
     oneTime: "Jusqu'à la fin du mois",
     groupByCategory: "Regrouper par catégorie",
     currentMonthOnly: "Ne montrer que le mois courant",
+    resetAll: "Effacer tout",
+    confirmReset: "Êtes-vous sûr·e de vouloir effacer toutes les données ?",
     recurring: "Tous les mois",
     date: "Date",
     untilDate: "jusqu'au END_DATE",
     estimate: "Estimations",
     noLabel: "Autre",
+    today: "Auj.",
     shortRange: {
       "day": "j."
     },

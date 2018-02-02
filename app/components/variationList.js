@@ -173,30 +173,30 @@ const VariationList = (props) => {
           }}
         >
           <List>
-          {
-            Object.entries(groupedVariations).map(([groupingName, variations]) => (
-              <div
-                key={groupingName}
-              >
-                {
-                  variations.length > 0 &&
-                    <Subheader
-                      style={{
-                        fontFamily: "Roboto, sans-serif",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      {translations[props.locale].groupingNames[groupingName]}
-                    </Subheader>
-                }
-                {
-                  props.groupByCategory ?
-                    variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range, props.currentDate)) :
-                    variationItems(props, computeGroupedVariations(variations.map((variation) => [variation.uuid, [variation]]), props.range, props.currentDate))
-                }
-              </div>
-            ))
-          }
+            {
+              Object.entries(groupedVariations).map(([groupingName, variations]) => (
+                <div
+                  key={groupingName}
+                >
+                  {
+                    variations.length > 0 &&
+                      <Subheader
+                        style={{
+                          fontFamily: "Roboto, sans-serif",
+                          fontWeight: "bold"
+                        }}
+                      >
+                        {translations[props.locale].groupingNames[groupingName]}
+                      </Subheader>
+                  }
+                  {
+                    props.groupByCategory ?
+                      variationItems(props, computeGroupedVariations(Object.entries(groupVariationsByCategory(variations)), props.range, props.currentDate)) :
+                      variationItems(props, computeGroupedVariations(variations.map((variation) => [variation.uuid, [variation]]), props.range, props.currentDate))
+                  }
+                </div>
+              ))
+            }
           </List>
         </ResponsiveContainer>
         <AddVariationButton containerElement={<Link to="/new" />} />

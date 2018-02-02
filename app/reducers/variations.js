@@ -15,6 +15,9 @@ export default function (state = [], action) {
           return (newState);
         }, [])
       );
+    case "RESET_VARIATIONS":
+      clearTotalRangeAmountsCache();
+      return [];
     default:
       return state;
     }

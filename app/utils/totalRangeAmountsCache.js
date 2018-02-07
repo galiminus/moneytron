@@ -15,6 +15,7 @@ export function getTotalRangeAmount(range, date) {
 export function clearTotalRangeAmountsCache() {
   totalRangeAmountsCache = {
     day: {},
+    dayWithoutCurrent: {},
     month: {}
   }
 }

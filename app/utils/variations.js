@@ -85,7 +85,7 @@ export function computeTotalRangeAmount(variations, currentDate, range) {
 
   const start = moment(currentDate).startOf('month');
   const endOfMonth = moment(currentDate).endOf("month");
-  const end = { "day": moment(currentDate), "month": moment(currentDate).endOf("month") }[range];
+  const end = { "day": moment(currentDate), "dayWithoutCurrent": moment(currentDate), "month": moment(currentDate).endOf("month") }[range];
 
   let totalAmount = 0;
   for (let n = 0; n < end.diff(start, 'days') + 1; n++) {
@@ -154,3 +154,28 @@ export function computeCurrentDayAbsoluteAmount(variations, currentDate) {
   }, 0);
   return (currentDayAbsoluteAmount);
 }
+
+export const computeGroupedVariations = (variations, range, currentDate) => (
+  variations.map(([key, variations]) => {
+    const variation = {
+      label: variations[0].label,
+      direction: variations[0].direction,
+      frequency: variations[0].frequency,
+      amount: variations.reduce((totalAmount, variation) => {
+        let variationAmount = Number(variation.amount);
+        if (variation.direction === "spending" || variation.direction === "project") {
+          variationAmount = -variationAmount;
+        }
+        return (totalAmount + variationAmount);
+      }, 0),
+      dailyAmount: variations.reduce((totalAmount, variation) => {
+        return (totalAmount + computeAmount(variation, range, currentDate));
+      }, 0),
+      end: variations.map((variation) => new Date(variation.end).getTime()).sort().reverse()[0],
+      date: variations.map((variation) => new Date(variation.date).getTime()).sort().reverse()[0],
+      uuid: key,
+      children: variations.map((variation) => variation.uuid)
+    }
+    return (variation);
+  })
+)

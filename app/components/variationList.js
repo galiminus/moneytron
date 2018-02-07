@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 import { removeVariation } from "../actions/variations";
 import AppBar from "./appbar";
 import VariationSummary from "./variationSummary";
-import { filterVariations, groupVariationsByCategory, sortVariations, groupVariationsByTypeAndFrequency } from "../utils/variations";
+import { filterVariations, groupVariationsByCategory, sortVariations, groupVariationsByTypeAndFrequency, computeGroupedVariations } from "../utils/variations";
 import translations from "../translations";
 import { setSelectedVariations } from "../actions/variations";
 import { openVariationForm, closeVariationForm } from "../actions/variationForm";
@@ -90,31 +90,6 @@ const SettingsButton = (props) => (
   <IconButton containerElement={<Link to="/settings" />}>
     <SettingsIcon color="white" />
   </IconButton>
-)
-
-const computeGroupedVariations = (variations, range, currentDate) => (
-  variations.map(([key, variations]) => {
-    const variation = {
-      label: variations[0].label,
-      direction: variations[0].direction,
-      frequency: variations[0].frequency,
-      amount: variations.reduce((totalAmount, variation) => {
-        let variationAmount = Number(variation.amount);
-        if (variation.direction === "spending" || variation.direction === "project") {
-          variationAmount = -variationAmount;
-        }
-        return (totalAmount + variationAmount);
-      }, 0),
-      dailyAmount: variations.reduce((totalAmount, variation) => {
-        return (totalAmount + computeAmount(variation, range, currentDate));
-      }, 0),
-      end: variations.map((variation) => new Date(variation.end).getTime()).sort().reverse()[0],
-      date: variations.map((variation) => new Date(variation.date).getTime()).sort().reverse()[0],
-      uuid: key,
-      children: variations.map((variation) => variation.uuid)
-    }
-    return (variation);
-  })
 )
 
 const variationItems = (props, variations) => (

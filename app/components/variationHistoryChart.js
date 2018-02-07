@@ -14,39 +14,30 @@ const dataFromVariations = (props) => (
 )
 
 const VariationHistoryChart = (props) => (
-  <div>
-    <Subheader
+  <ResponsiveContainer height={100}>
+    <LineChart
       style={{
-        fontFamily: "Roboto, sans-serif",
-        fontWeight: "bold"
+        fontSize: 10,
+        padding: "10px 0"
+      }}
+      height={100}
+      data={dataFromVariations(props)}
+      margin={{
+        top: 0,
+        right: 20,
+        left: -20,
+        bottom: 10
       }}
     >
-      {translations[props.locale].graphTitles.days.replace("DAYS", props.days)}
-    </Subheader>
-    <ResponsiveContainer height={100}>
-      <LineChart
-        style={{
-          fontSize: 10
-        }}
-        height={100}
-        data={dataFromVariations(props)}
-        margin={{
-          top: 0,
-          right: 20,
-          left: -20,
-          bottom: 10
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3"/>
+      <CartesianGrid strokeDasharray="3 3"/>
 
-        <YAxis
-          padding={{
-          }}
-        />
-        <Line type="monotone" dataKey="amount" stroke={deepPurple900} dot={false} />
-      </LineChart>
-    </ResponsiveContainer>
-  </div>
+      <YAxis
+        padding={{
+        }}
+      />
+      <Line type="monotone" dataKey="amount" stroke={deepPurple900} dot={false} />
+    </LineChart>
+  </ResponsiveContainer>
 )
 
 function mapStateToProps(state, props) {

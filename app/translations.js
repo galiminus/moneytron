@@ -33,6 +33,7 @@ export default {
     estimate: "Estimates",
     noLabel: "Other",
     today: "Today",
+    startingTomorrow: "à partir de demain",
     shortRange: {
       "day": "d."
     },
@@ -83,6 +84,7 @@ export default {
     estimate: "Estimations",
     noLabel: "Autre",
     today: "Auj.",
+    startingTomorrow: "from tomorrow",
     shortRange: {
       "day": "j."
     },

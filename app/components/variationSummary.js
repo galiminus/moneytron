@@ -9,28 +9,33 @@ import { deepPurple900, red900 } from 'material-ui/styles/colors';
 import { connect } from 'react-redux';
 
 import VariationHistoryChart from "./variationHistoryChart";
+import VariationAmountChart from "./variationAmountChart";
 import { setCurrentDate } from "../actions/currentDate";
 import { setSummaryDisplay } from "../actions/summaryDisplay";
 import { computeTotalRangeAmount, computeCurrentDayAbsoluteAmount } from "../utils/variations";
 import translations from "../translations";
 
+const removeCurrentVariations = (variations, date) => {
+  return (variations.reduce((filteredVariations, variation) => {
+    if (variation.direction === "project" || variation.frequency === "recurring") {
+      filteredVariations.push(variation)
+    } else if (variation.frequency === "one-time" && moment(variation.date).isBefore(moment(date).startOf('day'))) {
+      filteredVariations.push(variation)
+    }
+    return (filteredVariations);
+  }, []))
+}
+
 class VariationSummary extends React.Component {
   render() {
-    let amount;
-    let charts;
-    if (this.props.summaryDisplay === "average") {
-      amount = computeTotalRangeAmount(this.props.variations, this.props.currentDate, 'day');
-      charts = [
-        <VariationHistoryChart key={"30"} days={30} computer={computeTotalRangeAmount} />,
-      ]
-    }
-    if (this.props.summaryDisplay === "absolute") {
-      amount = computeCurrentDayAbsoluteAmount(this.props.variations, this.props.currentDate);
-      charts = [
-        <VariationHistoryChart key={"30"} days={30} computer={computeCurrentDayAbsoluteAmount} />,
-      ]
-    }
-    const amountText = new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(amount);
+    const averageAmount = computeTotalRangeAmount(removeCurrentVariations(this.props.variations, this.props.currentDate), this.props.currentDate, 'dayWithoutCurrent');
+    const averageAmountText = new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(averageAmount);
+
+    const absoluteAmount = computeCurrentDayAbsoluteAmount(this.props.variations, this.props.currentDate);
+    const absoluteAmountText = new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(Math.abs(absoluteAmount));
+
+    const tomorrowAverageAmount = computeTotalRangeAmount(this.props.variations, moment(this.props.currentDate).add(1, 'day').toDate(), 'day');
+    const tomorrowAverageAmountText = new Intl.NumberFormat(this.props.locale, { style: 'currency', currency: this.props.currency }).format(tomorrowAverageAmount);
 
     return (
       <Paper style={{
@@ -40,21 +45,18 @@ class VariationSummary extends React.Component {
           <ListItem
             style={{ padding: "8px 0" }}
             primaryTogglesNestedList={true}
-            nestedItems={
-              charts.concat(
-                <ListItem
-                  key={"changeDate"}
-                  onClick={() => this.setState({ datePickerOpen: true })}
-                  style={{
-                    marginTop: 16
-                  }}
-                  innerDivStyle={{
-                    textAlign: "right",
-                    paddingBottom: 0
-                  }}
-                />
-              )
-            }
+            nestedItems={[
+              <Subheader
+                key={"title"}
+                style={{
+                  fontFamily: "Roboto, sans-serif",
+                  fontWeight: "bold"
+                }}
+              >
+                {translations[this.props.locale].graphTitles.days.replace("DAYS", 30)}
+              </Subheader>,
+              <VariationHistoryChart key={"history"} days={30} computer={computeTotalRangeAmount} />,
+            ]}
             primaryText={
               <div
                 style={{
@@ -71,31 +73,34 @@ class VariationSummary extends React.Component {
                     top: 17
                   }}
                 >
-                  {moment(this.props.currentDate).locale(this.props.locale).format("LL")}
                 </div>
                 <div
                   style={{
                     textTransform: "lowercase",
-                    background: (amount >= 0 ? deepPurple900 : red900),
+                    background: (Math.abs(absoluteAmount) <= averageAmount || absoluteAmount > 0 ? deepPurple900 : red900),
                     padding: "8px 12px",
                     borderRadius: 3,
                     fontWeight: "bold",
                     color: "white",
                     display: "inline-block",
                     position: "absolute",
-                    top: 8,
-                  }}
-                  onClick={(e) => {
-                    this.props.setSummaryDisplay(this.props.summaryDisplay === "average" ? "absolute" : "average");
-                    e.stopPropagation();
+                    top: 0,
                   }}
                 >
-                  {
-                    {
-                      "average": `${amountText} / ${translations[this.props.locale].shortRange[this.props.range]}`,
-                      "absolute": `${amountText} ${translations[this.props.locale].today}`
-                    }[this.props.summaryDisplay]
-                  }
+                  {`${absoluteAmountText} / ${averageAmountText} ${translations[this.props.locale].today}`}
+                </div>
+                <div
+                  style={{
+                    textTransform: "lowercase",
+                    color: "rgba(0, 0, 0, 0.7)",
+                    display: "inline-block",
+                    position: "absolute",
+                    fontSize: "0.7em",
+                    top: 34,
+                    left: 18
+                  }}
+                >
+                  {`${tomorrowAverageAmountText} par jour à partir de demain`}
                 </div>
               </div>
             }

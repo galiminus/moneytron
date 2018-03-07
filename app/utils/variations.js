@@ -23,8 +23,8 @@ export function filterVariations(variations, date, range) {
 
 export function computeAmount(variation, range, currentDate) {
   let amount = Number(variation.amount);
-  let daysInMonth = moment(variation.date).daysInMonth();
-  let endOfMonth = moment(moment(variation.date).endOf('month'));
+  let daysInMonth = moment(currentDate).daysInMonth();
+  let endOfMonth = moment(moment(currentDate).endOf('month'));
 
   if (variation.direction === "spending" || variation.direction === "project") {
     amount = -amount;
@@ -141,7 +141,7 @@ export function groupVariationsByCategory(variations) {
 
 export function computeCurrentDayAbsoluteAmount(variations, currentDate) {
   let currentDayAbsoluteAmount = variations.reduce((currentDayAbsoluteAmount, variation) => {
-    if (variation.frequency === "one-time" && moment(variation.date).isSame(moment(currentDate), 'day')) {
+    if (variation.frequency === "one-time" && variation.direction !== "project" && moment(variation.date).isSame(moment(currentDate), 'day')) {
       let variationAmount = Number(variation.amount);
 
       if (variation.direction === "spending") {

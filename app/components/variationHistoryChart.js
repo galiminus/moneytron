@@ -17,8 +17,7 @@ const VariationHistoryChart = (props) => (
   <ResponsiveContainer height={100}>
     <LineChart
       style={{
-        fontSize: 10,
-        padding: "10px 0"
+        fontSize: 10
       }}
       height={100}
       data={dataFromVariations(props)}

@@ -150,7 +150,7 @@ const mapStateToProps = (state) => {
     initialValues: {
       direction: "spending",
       frequency: "one-time",
-      end: moment().add(2, 'month').startOf('month').toDate()
+      end: moment().toDate()
     },
     currency: state.configuration.currency,
     locale: state.configuration.locale,

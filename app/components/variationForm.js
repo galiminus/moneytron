@@ -102,7 +102,7 @@ const VariationForm = (props) => (
             {
               "spending": translations[props.locale].spending,
               "earning": translations[props.locale].earning,
-              "project": translations[props.locale].project
+              // "project": translations[props.locale].project
             }
           }
         />

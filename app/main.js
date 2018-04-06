@@ -56,4 +56,11 @@ document.addEventListener("DOMContentLoaded", e => {
   Array.from(Array(days).keys()).forEach((day) => (
     computeTotalRangeAmount(store.getState().variations, moment(store.getState().currentDate).subtract(days - day - 1, 'days').toDate(), 'day')
   ));
+
+  // remove projects
+  (store.getState().variations || []).map((variation) => {
+    if (variation.direction === "project") {
+      store.dispatch({ type: "REMOVE_VARIATION", payload: variation.uuid })
+    }
+  })
 })
